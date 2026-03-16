@@ -1,0 +1,46 @@
+<!-- Page Hero -->
+<app-page-hero label="პროდუქტები" title="სასუქები &" titleAccent="ნიადაგი"
+    subtitle="მაღალი ხარისხის სასუქები და ნიადაგის ნარევები თქვენი მცენარეების ჯანმრთელი ზრდისთვის." />
+
+<!-- Filters + Grid -->
+<section class="prod-list">
+    <div class="prod-list__container">
+        <!-- Category Filter -->
+        <div class="prod-list__filters">
+            @for (cat of categories; track cat.id) {
+            <button class="prod-list__filter" [class.active]="activeCategory() === cat.id"
+                (click)="setCategory(cat.id)">
+                {{ cat.label }}
+            </button>
+            }
+        </div>
+
+        <!-- Products Grid -->
+        <div class="prod-list__grid">
+            @for (product of filteredProducts; track product.slug) {
+            <a [routerLink]="['/products', product.slug]" class="prod-list__card">
+                <div class="prod-list__card-visual" [style.background]="product.gradient">
+                    @if (product.badge) {
+                    <span class="prod-list__card-badge">{{ product.badge }}</span>
+                    }
+                    <span class="prod-list__card-volume">{{ product.volume }}</span>
+                </div>
+                <div class="prod-list__card-info">
+                    <div class="prod-list__card-top">
+                        <h3 class="prod-list__card-name">{{ product.name }}</h3>
+                        <span class="prod-list__card-price">{{ product.price }}</span>
+                    </div>
+                    <p class="prod-list__card-desc">{{ product.description }}</p>
+                    <div class="prod-list__card-link">
+                        <span>დეტალურად</span>
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </a>
+            }
+        </div>
+    </div>
+</section>

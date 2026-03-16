@@ -1,0 +1,113 @@
+// ══════════════════════════════════════
+//  Page Hero (Inner Pages)
+// ══════════════════════════════════════
+
+.page-hero {
+    position: relative;
+    padding: calc(var(--header-height) + var(--space-3xl)) 0 var(--space-3xl);
+    color: var(--color-white);
+    overflow: hidden;
+    text-align: center;
+
+    // ── Background ──
+    &__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+
+        &-image {
+            position: absolute;
+            inset: 0;
+            background: url('/assets/gvimra.jpg') center center / cover no-repeat;
+            transform: scale(1.03);
+        }
+
+        &-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(27, 67, 50, 0.88) 0%,
+                    rgba(27, 67, 50, 0.72) 40%,
+                    rgba(45, 106, 79, 0.62) 70%,
+                    rgba(27, 67, 50, 0.82) 100%);
+        }
+
+        &-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        &-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+
+            &--1 {
+                width: 500px;
+                height: 500px;
+                background: rgba(82, 183, 136, 0.12);
+                top: -100px;
+                right: -100px;
+            }
+
+            &--2 {
+                width: 400px;
+                height: 400px;
+                background: rgba(45, 106, 79, 0.15);
+                bottom: -120px;
+                left: -80px;
+            }
+        }
+    }
+
+    // ── Container ──
+    &__container {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 var(--space-xl);
+    }
+
+    // ── Label ──
+    &__label {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-gold);
+        margin-bottom: var(--space-md);
+    }
+
+    // ── Title ──
+    &__title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4.5vw, 2.8rem);
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: var(--space-lg);
+
+        &-accent {
+            display: inline;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    }
+
+    // ── Subtitle ──
+    &__subtitle {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.65);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}

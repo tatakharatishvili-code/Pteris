@@ -1,0 +1,43 @@
+<section class="results" id="results">
+  <div class="results__container">
+    <div class="results__header">
+      <span class="results__label">შედეგები</span>
+      <h2 class="results__title">
+        ჩვენი
+        <span class="results__title-accent">წარმატებული პროექტები</span>
+      </h2>
+      <p class="results__subtitle">
+        ყოველი პროექტი უნიკალური ისტორიაა. ნახეთ, როგორ ვქმნით მწვანე სივრცეებს საქართველოს წამყვან ლოკაციებზე.
+      </p>
+    </div>
+
+    <div class="results__grid">
+      @for (project of projects; track project.title; let i = $index) {
+        <div class="results__card" [class]="'results__card--' + (i + 1)">
+          <div class="results__card-visual">
+            <div class="results__card-overlay"></div>
+            <span class="results__card-category">{{ project.category }}</span>
+          </div>
+          <div class="results__card-content">
+            <h3 class="results__card-title">{{ project.title }}</h3>
+            <p class="results__card-desc">{{ project.description }}</p>
+            <div class="results__card-stats">
+              <div class="results__card-stat">
+                <span class="results__card-stat-value">{{ project.stats.plants }}</span>
+                <span class="results__card-stat-label">მცენარე</span>
+              </div>
+              <div class="results__card-stat">
+                <span class="results__card-stat-value">{{ project.stats.area }}</span>
+                <span class="results__card-stat-label">ფართობი</span>
+              </div>
+              <div class="results__card-stat">
+                <span class="results__card-stat-value">{{ project.stats.duration }}</span>
+                <span class="results__card-stat-label">ვადა</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

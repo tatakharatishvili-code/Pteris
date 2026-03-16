@@ -1,0 +1,56 @@
+<!-- Page Hero -->
+<app-page-hero
+  label="მოვლის გზამკვლევი"
+  title="მცენარეთა"
+  titleAccent="მოვლა"
+  subtitle="პრაქტიკული რჩევები და ვიდეო გაკვეთილები თქვენი მცენარეების ჯანმრთელი ზრდისთვის."
+/>
+
+<!-- Filters + Grid -->
+<section class="care-list">
+  <div class="care-list__container">
+    <!-- Category Filter -->
+    <div class="care-list__filters">
+      @for (cat of categories; track cat.id) {
+        <button
+          class="care-list__filter"
+          [class.active]="activeCategory() === cat.id"
+          (click)="setCategory(cat.id)"
+        >
+          {{ cat.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Guides Grid -->
+    <div class="care-list__grid">
+      @for (guide of filteredGuides; track guide.slug) {
+        <a [routerLink]="['/care', guide.slug]" class="care-list__card">
+          <div class="care-list__card-visual" [style.background]="guide.gradient">
+            <span class="care-list__card-icon">{{ guide.icon }}</span>
+          </div>
+          <div class="care-list__card-info">
+            <div class="care-list__card-tags">
+              <span class="care-list__card-difficulty">{{ guide.difficulty }}</span>
+              <span class="care-list__card-time">
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M10 6V10L13 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                {{ guide.readTime }}
+              </span>
+            </div>
+            <h3 class="care-list__card-title">{{ guide.title }}</h3>
+            <p class="care-list__card-desc">{{ guide.description }}</p>
+            <div class="care-list__card-link">
+              <span>წაიკითხე</span>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>

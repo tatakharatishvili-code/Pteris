@@ -1,0 +1,132 @@
+<!-- Page Hero -->
+<app-page-hero label="პარტნიორები" title="ნდობით გვირჩევენ" titleAccent="წამყვანი ბრენდები"
+    subtitle="საქართველოს წამყვანი კომპანიები, სასტუმროები და კერძო კლიენტები, რომლებიც Pteris-ს ენდობიან მწვანე სივრცეების შექმნაში." />
+
+<!-- Stats Bar -->
+<section class="pp-stats">
+    <div class="pp-stats__container">
+        <div class="pp-stats__item">
+            <span class="pp-stats__value">50+</span>
+            <span class="pp-stats__label">კორპორატიული პარტნიორი</span>
+        </div>
+        <div class="pp-stats__item">
+            <span class="pp-stats__value">100+</span>
+            <span class="pp-stats__label">დასრულებული პროექტი</span>
+        </div>
+        <div class="pp-stats__item">
+            <span class="pp-stats__value">8+</span>
+            <span class="pp-stats__label">წლიანი თანამშრომლობა</span>
+        </div>
+        <div class="pp-stats__item">
+            <span class="pp-stats__value">98%</span>
+            <span class="pp-stats__label">კმაყოფილების მაჩვენებელი</span>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Grid -->
+<section class="pp-list">
+    <div class="pp-list__container">
+        <!-- Filters -->
+        <div class="pp-list__filters">
+            @for (cat of categories; track cat.key) {
+            <button class="pp-list__filter" [class.active]="activeFilter === cat.key" (click)="setFilter(cat.key)">
+                {{ cat.label }}
+            </button>
+            }
+        </div>
+
+        <!-- Grid -->
+        <div class="pp-list__grid">
+            @for (partner of filteredPartners; track partner.name) {
+            <div class="pp-list__card">
+                <div class="pp-list__card-header">
+                    <div class="pp-list__card-avatar">
+                        {{ partner.name[0] }}
+                    </div>
+                    <span class="pp-list__card-badge">{{ partner.type }}</span>
+                </div>
+                <h3 class="pp-list__card-name">{{ partner.name }}</h3>
+                <p class="pp-list__card-desc">{{ partner.description }}</p>
+                <div class="pp-list__card-meta">
+                    <span class="pp-list__card-meta-item">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        {{ partner.projects }}
+                    </span>
+                    <span class="pp-list__card-meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M8 2V5" stroke-linecap="round" />
+                            <path d="M16 2V5" stroke-linecap="round" />
+                            <rect x="3" y="4" width="18" height="18" rx="3" />
+                            <path d="M3 10H21" stroke-linecap="round" />
+                        </svg>
+                        {{ partner.since }} წლიდან
+                    </span>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="pp-testimonials">
+    <div class="pp-testimonials__container">
+        <h2 class="pp-testimonials__heading">რას ამბობენ ჩვენი პარტნიორები</h2>
+
+        <div class="pp-testimonials__wrapper">
+            @for (t of testimonials; track t.author; let i = $index) {
+            <div class="pp-testimonials__item" [class.active]="currentTestimonial === i">
+                <svg class="pp-testimonials__quote" width="40" height="32" viewBox="0 0 40 32" fill="none">
+                    <path d="M0 20L8 0H16L12 20H18V32H0V20ZM22 20L30 0H38L34 20H40V32H22V20Z" fill="currentColor" />
+                </svg>
+                <p class="pp-testimonials__text">{{ t.text }}</p>
+                <div class="pp-testimonials__author">
+                    <div class="pp-testimonials__avatar">{{ t.author[0] }}</div>
+                    <div>
+                        <span class="pp-testimonials__name">{{ t.author }}</span>
+                        <span class="pp-testimonials__position">{{ t.position }}</span>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+        <div class="pp-testimonials__nav">
+            <button (click)="prevTestimonial()" aria-label="წინა">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <span>{{ currentTestimonial + 1 }} / {{ testimonials.length }}</span>
+            <button (click)="nextTestimonial()" aria-label="შემდეგი">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 5L12 10L7 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="pp-cta">
+    <div class="pp-cta__container">
+        <h2 class="pp-cta__title">გსურთ გახდეთ ჩვენი პარტნიორი?</h2>
+        <p class="pp-cta__text">
+            დაგვიკავშირდით და ერთად შევქმნით მწვანე მომავალი თქვენი ბიზნესისთვის.
+        </p>
+        <a routerLink="/contact" class="pp-cta__btn">
+            <span>დაგვიკავშირდით</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+    </div>
+</section>

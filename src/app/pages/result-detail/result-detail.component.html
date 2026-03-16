@@ -1,0 +1,165 @@
+@if (detail) {
+<!-- Page Hero -->
+<app-page-hero [label]="detail.category" [title]="detail.title" [subtitle]="detail.heroSubtitle" />
+
+<!-- Project Info -->
+<section class="rd-info">
+    <div class="rd-info__container">
+        <div class="rd-info__meta">
+            <div class="rd-info__meta-item">
+                <span class="rd-info__meta-label">კლიენტი</span>
+                <span class="rd-info__meta-value">{{ detail.client }}</span>
+            </div>
+            <div class="rd-info__meta-item">
+                <span class="rd-info__meta-label">ლოკაცია</span>
+                <span class="rd-info__meta-value">{{ detail.location }}</span>
+            </div>
+            <div class="rd-info__meta-item">
+                <span class="rd-info__meta-label">წელი</span>
+                <span class="rd-info__meta-value">{{ detail.year }}</span>
+            </div>
+            <div class="rd-info__meta-item">
+                <span class="rd-info__meta-label">მცენარეები</span>
+                <span class="rd-info__meta-value">{{ detail.stats.plants }}</span>
+            </div>
+            <div class="rd-info__meta-item">
+                <span class="rd-info__meta-label">ფართობი</span>
+                <span class="rd-info__meta-value">{{ detail.stats.area }}</span>
+            </div>
+            <div class="rd-info__meta-item">
+                <span class="rd-info__meta-label">ვადა</span>
+                <span class="rd-info__meta-value">{{ detail.stats.duration }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Before / After Hero Slider -->
+<section class="rd-ba">
+    <div class="rd-ba__container">
+        <h2 class="rd-ba__heading">მანამდე & შემდეგ</h2>
+        <div class="rd-ba__slider" #mainSlider (mousemove)="onSliderMove($event, mainSlider)"
+            (touchmove)="onSliderMove($event, mainSlider)">
+            <div class="rd-ba__after" [style.background]="detail.afterGradient">
+                <span class="rd-ba__label rd-ba__label--after">შემდეგ</span>
+            </div>
+            <div class="rd-ba__before" [style.background]="detail.beforeGradient"
+                [style.clip-path]="'inset(0 ' + (100 - sliderPosition) + '% 0 0)'">
+                <span class="rd-ba__label rd-ba__label--before">მანამდე</span>
+            </div>
+            <div class="rd-ba__handle" [style.left.%]="sliderPosition">
+                <div class="rd-ba__line"></div>
+                <div class="rd-ba__knob">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 4L3 10L7 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M13 4L17 10L13 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Challenge / Solution / Result -->
+<section class="rd-story">
+    <div class="rd-story__container">
+        <div class="rd-story__grid">
+            <div class="rd-story__block">
+                <div class="rd-story__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8V12L15 15" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="rd-story__title">გამოწვევა</h3>
+                <p class="rd-story__text">{{ detail.challenge }}</p>
+            </div>
+            <div class="rd-story__block">
+                <div class="rd-story__icon rd-story__icon--solution">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="rd-story__title">გადაწყვეტა</h3>
+                <p class="rd-story__text">{{ detail.solution }}</p>
+            </div>
+            <div class="rd-story__block">
+                <div class="rd-story__icon rd-story__icon--result">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999"
+                            stroke-linecap="round" />
+                        <path d="M22 4L12 14.01L9 11.01" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="rd-story__title">შედეგი</h3>
+                <p class="rd-story__text">{{ detail.result }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery -->
+<section class="rd-gallery">
+    <div class="rd-gallery__container">
+        <h2 class="rd-gallery__heading">გალერეა</h2>
+        <div class="rd-gallery__grid">
+            @for (item of detail.gallery; track item.label) {
+            <div class="rd-gallery__item" [style.background]="item.gradient">
+                <span class="rd-gallery__item-label">{{ item.label }}</span>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Testimonial -->
+@if (detail.testimonial) {
+<section class="rd-testimonial">
+    <div class="rd-testimonial__container">
+        <div class="rd-testimonial__card">
+            <svg class="rd-testimonial__quote" viewBox="0 0 32 32" fill="none">
+                <path
+                    d="M5 22C5 18 8 14 13 12L14 14C10 16 9 18 9 20H13V26H5V22ZM19 22C19 18 22 14 27 12L28 14C24 16 23 18 23 20H27V26H19V22Z"
+                    fill="currentColor" />
+            </svg>
+            <p class="rd-testimonial__text">{{ detail.testimonial.text }}</p>
+            <div class="rd-testimonial__author">
+                <span class="rd-testimonial__name">{{ detail.testimonial.author }}</span>
+                <span class="rd-testimonial__role">{{ detail.testimonial.role }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+}
+
+<!-- Other Projects -->
+<section class="rd-others">
+    <div class="rd-others__container">
+        <h2 class="rd-others__heading">სხვა პროექტები</h2>
+        <div class="rd-others__grid">
+            @for (p of otherProjects; track p.slug) {
+            <a [routerLink]="['/results', p.slug]" class="rd-others__card">
+                <div class="rd-others__card-visual" [style.background]="p.afterGradient">
+                    <span class="rd-others__card-category">{{ p.category }}</span>
+                </div>
+                <div class="rd-others__card-body">
+                    <h3 class="rd-others__card-title">{{ p.title }}</h3>
+                    <p class="rd-others__card-desc">{{ p.description }}</p>
+                    <span class="rd-others__card-link">
+                        დეტალურად
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+            }
+        </div>
+    </div>
+</section>
+}

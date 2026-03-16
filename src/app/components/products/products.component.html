@@ -1,0 +1,54 @@
+<section class="products" id="products">
+  <div class="products__container">
+    <div class="products__header">
+      <span class="products__label">პროდუქტები</span>
+      <h2 class="products__title">
+        აღმოაჩინეთ ჩვენი
+        <span class="products__title-accent">კოლექცია</span>
+      </h2>
+      <p class="products__subtitle">
+        ხარისხიანი, ჯანმრთელი მცენარეები პირდაპირ საუკეთესო სანერგეებიდან.
+      </p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="products__filters">
+      @for (cat of categories; track cat.id) {
+        <button
+          class="products__filter"
+          [class.active]="activeCategory() === cat.id"
+          (click)="setCategory(cat.id)"
+        >
+          {{ cat.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products__grid">
+      @for (product of filteredProducts; track product.name) {
+        <div class="products__card">
+          <div class="products__card-visual">
+            <div class="products__card-gradient"></div>
+            @if (product.badge) {
+              <span class="products__card-badge">{{ product.badge }}</span>
+            }
+          </div>
+          <div class="products__card-info">
+            <div class="products__card-top">
+              <h3 class="products__card-name">{{ product.name }}</h3>
+              <span class="products__card-price">{{ product.price }}</span>
+            </div>
+            <p class="products__card-desc">{{ product.description }}</p>
+            <button class="products__card-btn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              კალათაში
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+<section class="partners" id="partners">
+  <div class="partners__container">
+    <div class="partners__header">
+      <span class="partners__label">პარტნიორები</span>
+      <h2 class="partners__title">
+        ნდობით გვირჩევენ
+        <span class="partners__title-accent">წამყვანი ბრენდები</span>
+      </h2>
+    </div>
+
+    <!-- Partners Marquee -->
+    <div class="partners__marquee">
+      <div class="partners__marquee-track">
+        @for (partner of partners; track partner.name) {
+          <div class="partners__partner">
+            <span class="partners__partner-name">{{ partner.name }}</span>
+            <span class="partners__partner-type">{{ partner.type }}</span>
+          </div>
+        }
+        <!-- Duplicate for seamless loop -->
+        @for (partner of partners; track partner.name + '-dup') {
+          <div class="partners__partner">
+            <span class="partners__partner-name">{{ partner.name }}</span>
+            <span class="partners__partner-type">{{ partner.type }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="partners__testimonials">
+      <div class="partners__testimonial-wrapper">
+        @for (testimonial of testimonials; track testimonial.author; let i = $index) {
+          <div class="partners__testimonial" [class.active]="currentTestimonial === i">
+            <svg class="partners__testimonial-quote" width="40" height="32" viewBox="0 0 40 32" fill="none">
+              <path d="M0 20L8 0H16L12 20H18V32H0V20ZM22 20L30 0H38L34 20H40V32H22V20Z" fill="currentColor"/>
+            </svg>
+            <p class="partners__testimonial-text">{{ testimonial.text }}</p>
+            <div class="partners__testimonial-author">
+              <div class="partners__testimonial-avatar">{{ testimonial.author[0] }}</div>
+              <div>
+                <span class="partners__testimonial-name">{{ testimonial.author }}</span>
+                <span class="partners__testimonial-position">{{ testimonial.position }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="partners__testimonial-nav">
+        <button (click)="prevTestimonial()" aria-label="წინა">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span>{{ currentTestimonial + 1 }} / {{ testimonials.length }}</span>
+        <button (click)="nextTestimonial()" aria-label="შემდეგი">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7 5L12 10L7 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

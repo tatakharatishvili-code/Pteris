@@ -1,0 +1,177 @@
+.results {
+  padding: var(--space-4xl) 0;
+  background: var(--color-cream);
+
+  &__container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+  }
+
+  &__header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto var(--space-3xl);
+  }
+
+  &__label {
+    display: inline-block;
+    padding: 6px 20px;
+    background: var(--color-green-mist);
+    color: var(--color-green-rich);
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-lg);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--color-navy);
+    line-height: 1.2;
+    margin-bottom: var(--space-lg);
+
+    &-accent {
+      display: block;
+      background: linear-gradient(135deg, var(--color-green-vibrant), var(--color-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(26, 26, 46, 0.6);
+  }
+
+  // ── Grid ──
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 360px 360px;
+    gap: var(--space-xl);
+
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+  }
+
+  // ── Card ──
+  &__card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-normal);
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+
+      .results__card-visual {
+        transform: scale(1.03);
+      }
+
+      .results__card-overlay {
+        opacity: 0.6;
+      }
+    }
+
+    &--1 { grid-row: span 2; }
+
+    &-visual {
+      flex: 1;
+      min-height: 200px;
+      background: var(--gradient-forest);
+      position: relative;
+      transition: transform var(--transition-slow);
+    }
+
+    &-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(27, 67, 50, 0.8) 100%);
+      opacity: 0.5;
+      transition: opacity var(--transition-normal);
+    }
+
+    &-category {
+      position: absolute;
+      top: var(--space-lg);
+      left: var(--space-lg);
+      padding: 4px 14px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-full);
+      color: var(--color-white);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    &-content {
+      padding: var(--space-xl);
+      background: var(--color-white);
+    }
+
+    &-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      margin-bottom: var(--space-sm);
+    }
+
+    &-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.55);
+      margin-bottom: var(--space-lg);
+    }
+
+    &-stats {
+      display: flex;
+      gap: var(--space-xl);
+    }
+
+    &-stat {
+      display: flex;
+      flex-direction: column;
+
+      &-value {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--color-green-vibrant);
+      }
+
+      &-label {
+        font-size: 0.7rem;
+        color: rgba(26, 26, 46, 0.4);
+        font-weight: 500;
+      }
+    }
+
+    // Variations
+    &--1 .results__card-visual {
+      background: linear-gradient(160deg, #1B4332, #52B788);
+    }
+    &--2 .results__card-visual {
+      background: linear-gradient(160deg, #2D6A4F, #95D5B2);
+    }
+    &--3 .results__card-visual {
+      background: linear-gradient(160deg, #C9A96E, #2D6A4F);
+    }
+    &--4 .results__card-visual {
+      background: linear-gradient(160deg, #1A1A2E, #52B788);
+    }
+  }
+}

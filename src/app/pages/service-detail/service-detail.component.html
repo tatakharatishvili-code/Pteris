@@ -1,0 +1,95 @@
+@if (detail) {
+<!-- Page Hero -->
+<app-page-hero [label]="detail.heroLabel" [title]="detail.title" [subtitle]="detail.heroSubtitle" />
+
+<!-- Content Sections -->
+<section class="detail-content">
+    <div class="detail-content__container">
+        @for (section of detail.sections; track section.title) {
+        <div class="detail-content__block">
+            <h2 class="detail-content__title">{{ section.title }}</h2>
+            <p class="detail-content__text">{{ section.text }}</p>
+        </div>
+        }
+    </div>
+</section>
+
+<!-- Process -->
+<section class="detail-process">
+    <div class="detail-process__container">
+        <h2 class="detail-process__heading">მუშაობის პროცესი</h2>
+        <div class="detail-process__grid">
+            @for (item of detail.process; track item.step) {
+            <div class="detail-process__step">
+                <span class="detail-process__step-num">{{ item.step }}</span>
+                <h3 class="detail-process__step-title">{{ item.title }}</h3>
+                <p class="detail-process__step-desc">{{ item.description }}</p>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Benefits -->
+<section class="detail-benefits">
+    <div class="detail-benefits__container">
+        <h2 class="detail-benefits__heading">რას მიიღებთ</h2>
+        <div class="detail-benefits__grid">
+            @for (benefit of detail.benefits; track benefit) {
+            <div class="detail-benefits__item">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="10" fill="var(--color-green-mist)" />
+                    <path d="M6 10L9 13L14 7" stroke="var(--color-green-rich)" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span>{{ benefit }}</span>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Other Services -->
+<section class="detail-others">
+    <div class="detail-others__container">
+        <h2 class="detail-others__heading">სხვა სერვისები</h2>
+        <div class="detail-others__grid">
+            @for (s of otherServices; track s.slug) {
+            <a [routerLink]="['/services', s.slug]" class="detail-others__card">
+                <h3 class="detail-others__card-title">{{ s.title }}</h3>
+                <p class="detail-others__card-desc">{{ s.description }}</p>
+                <span class="detail-others__card-link">
+                    დეტალურად
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </a>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="detail-cta">
+    <div class="detail-cta__container">
+        <h2 class="detail-cta__title">დაინტერესდით?</h2>
+        <p class="detail-cta__text">
+            დაგვიკავშირდით და ჩვენი ექსპერტთა გუნდი დაგეხმარებათ.
+        </p>
+        <div class="detail-cta__actions">
+            <a routerLink="/contact" class="detail-cta__btn detail-cta__btn--primary">
+                <span>დაგვიკავშირდით</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+            <a routerLink="/services" class="detail-cta__btn detail-cta__btn--secondary">
+                ყველა სერვისი
+            </a>
+        </div>
+    </div>
+</section>
+}

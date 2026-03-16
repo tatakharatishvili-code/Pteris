@@ -1,0 +1,119 @@
+<!-- Page Hero -->
+<app-page-hero label="სერვისები" title="სრული სპექტრი" titleAccent="ბოტანიკური სერვისებისა"
+    subtitle="მცენარეთა შერჩევიდან მუდმივ მოვლამდე — გთავაზობთ ყოვლისმომცველ სერვისებს, რომლებიც თქვენს სივრცეს სიცოცხლეს შთაბერავს." />
+
+<!-- Services List -->
+<section class="services-list">
+    <div class="services-list__container">
+        <div class="services-list__grid">
+            @for (service of services; track service.slug; let i = $index) {
+            <a [routerLink]="['/services', service.slug]" class="services-list__card">
+                <div class="services-list__card-header">
+                    <div class="services-list__card-icon">
+                        @switch (service.icon) {
+                        @case ('design') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 3H21V21H3V3Z" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 9H21" stroke-linecap="round" />
+                            <path d="M9 21V9" stroke-linecap="round" />
+                            <circle cx="6" cy="6" r="1" fill="currentColor" stroke="none" />
+                        </svg>
+                        }
+                        @case ('plant') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22V12" stroke-linecap="round" />
+                            <path d="M12 12C12 12 12 6 18 3C18 9 12 12 12 12Z" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M12 15C12 15 12 9 6 6C6 12 12 15 12 15Z" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        }
+                        @case ('care') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        }
+                        @case ('office') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 21H21" stroke-linecap="round" />
+                            <path d="M5 21V5L13 3V21" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M13 10H19V21" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M8 7H9" stroke-linecap="round" />
+                            <path d="M8 10H9" stroke-linecap="round" />
+                            <path d="M8 13H9" stroke-linecap="round" />
+                            <path d="M16 13H17" stroke-linecap="round" />
+                            <path d="M16 16H17" stroke-linecap="round" />
+                        </svg>
+                        }
+                        @case ('event') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M8 2V5" stroke-linecap="round" />
+                            <path d="M16 2V5" stroke-linecap="round" />
+                            <rect x="3" y="4" width="18" height="18" rx="3" />
+                            <path d="M3 10H21" stroke-linecap="round" />
+                            <path d="M12 14L11 17H13L12 20" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        }
+                        @case ('consult') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M21 15C21 15.55 20.78 16.05 20.41 16.41C20.05 16.78 19.55 17 19 17H7L3 21V5C3 4.45 3.22 3.95 3.59 3.59C3.95 3.22 4.45 3 5 3H19C19.55 3 20.05 3.22 20.41 3.59C20.78 3.95 21 4.45 21 5V15Z"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M8 10H8.01" stroke-linecap="round" />
+                            <path d="M12 10H12.01" stroke-linecap="round" />
+                            <path d="M16 10H16.01" stroke-linecap="round" />
+                        </svg>
+                        }
+                        }
+                    </div>
+                    <span class="services-list__card-number">0{{ i + 1 }}</span>
+                </div>
+
+                <h3 class="services-list__card-title">{{ service.title }}</h3>
+                <p class="services-list__card-desc">{{ service.description }}</p>
+
+                <ul class="services-list__card-features">
+                    @for (feat of service.features; track feat) {
+                    <li>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        {{ feat }}
+                    </li>
+                    }
+                </ul>
+
+                <div class="services-list__card-link">
+                    <span>დეტალურად</span>
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            </a>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="services-cta">
+    <div class="services-cta__container">
+        <div class="services-cta__content">
+            <h2 class="services-cta__title">გაინტერესებთ ჩვენი სერვისები?</h2>
+            <p class="services-cta__text">
+                დაგვიკავშირდით და ჩვენი ექსპერტთა გუნდი დაგეხმარებათ თქვენთვის
+                ოპტიმალური გადაწყვეტილების შერჩევაში.
+            </p>
+            <a routerLink="/contact" class="services-cta__btn">
+                <span>დაგვიკავშირდით</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>

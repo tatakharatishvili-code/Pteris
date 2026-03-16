@@ -1,0 +1,126 @@
+@if (detail) {
+<!-- Page Hero -->
+<app-page-hero
+  [label]="detail.heroLabel"
+  [title]="detail.title"
+  [subtitle]="detail.heroSubtitle"
+/>
+
+<!-- Content Sections -->
+<section class="cd-content">
+  <div class="cd-content__container">
+    @for (section of detail.sections; track section.title) {
+      <div class="cd-content__block">
+        <h2 class="cd-content__title">{{ section.title }}</h2>
+        <p class="cd-content__text">{{ section.text }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Steps -->
+<section class="cd-steps">
+  <div class="cd-steps__container">
+    <h2 class="cd-steps__heading">ეტაპები</h2>
+    <div class="cd-steps__grid">
+      @for (item of detail.steps; track item.step) {
+        <div class="cd-steps__step">
+          <span class="cd-steps__step-num">{{ item.step }}</span>
+          <h3 class="cd-steps__step-title">{{ item.title }}</h3>
+          <p class="cd-steps__step-desc">{{ item.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Videos -->
+@if (detail.videos.length > 0) {
+<section class="cd-videos">
+  <div class="cd-videos__container">
+    <h2 class="cd-videos__heading">ვიდეო გაკვეთილები</h2>
+    <div class="cd-videos__grid">
+      @for (video of detail.videos; track video.youtubeId; let i = $index) {
+        <div class="cd-videos__item">
+          <div class="cd-videos__embed">
+            <iframe
+              [src]="safeVideoUrls[i]"
+              title="{{ video.title }}"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <h3 class="cd-videos__title">{{ video.title }}</h3>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+}
+
+<!-- Tips -->
+<section class="cd-tips">
+  <div class="cd-tips__container">
+    <h2 class="cd-tips__heading">სასარგებლო რჩევები</h2>
+    <div class="cd-tips__list">
+      @for (tip of detail.tips; track tip; let i = $index) {
+        <div class="cd-tips__item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="10" fill="var(--color-green-mist)" />
+            <path d="M6 10L9 13L14 7" stroke="var(--color-green-rich)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>{{ tip }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Related Guides -->
+@if (relatedGuides.length > 0) {
+<section class="cd-related">
+  <div class="cd-related__container">
+    <h2 class="cd-related__heading">მსგავსი სტატიები</h2>
+    <div class="cd-related__grid">
+      @for (g of relatedGuides; track g.slug) {
+        <a [routerLink]="['/care', g.slug]" class="cd-related__card">
+          <div class="cd-related__card-visual" [style.background]="g.gradient">
+            <span class="cd-related__card-icon">{{ g.icon }}</span>
+          </div>
+          <div class="cd-related__card-info">
+            <h3 class="cd-related__card-title">{{ g.title }}</h3>
+            <p class="cd-related__card-desc">{{ g.description }}</p>
+            <span class="cd-related__card-link">
+              წაიკითხე
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+}
+
+<!-- CTA -->
+<section class="cd-cta">
+  <div class="cd-cta__container">
+    <h2 class="cd-cta__title">გჭირდებათ პროფესიონალური მოვლა?</h2>
+    <p class="cd-cta__text">ჩვენი ექსპერტთა გუნდი დაგეხმარებათ მცენარეების მოვლაში.</p>
+    <div class="cd-cta__actions">
+      <a routerLink="/contact" class="cd-cta__btn cd-cta__btn--primary">
+        <span>დაგვიკავშირდით</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <a routerLink="/care" class="cd-cta__btn cd-cta__btn--secondary">
+        ყველა სტატია
+      </a>
+    </div>
+  </div>
+</section>
+}

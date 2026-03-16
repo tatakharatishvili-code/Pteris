@@ -1,0 +1,143 @@
+@if (detail) {
+<!-- Page Hero -->
+<app-page-hero [label]="detail.heroLabel" [title]="detail.name" [subtitle]="detail.heroSubtitle" />
+
+<!-- Product Info Banner -->
+<section class="pd-info">
+    <div class="pd-info__container">
+        <div class="pd-info__visual" [style.background]="detail.gradient">
+            @if (detail.badge) {
+            <span class="pd-info__badge">{{ detail.badge }}</span>
+            }
+        </div>
+        <div class="pd-info__meta">
+            <div class="pd-info__meta-item">
+                <span class="pd-info__meta-label">ფასი</span>
+                <span class="pd-info__meta-value pd-info__meta-value--price">{{ detail.price }}</span>
+            </div>
+            <div class="pd-info__meta-item">
+                <span class="pd-info__meta-label">მოცულობა</span>
+                <span class="pd-info__meta-value">{{ detail.volume }}</span>
+            </div>
+            <div class="pd-info__meta-item">
+                <span class="pd-info__meta-label">კატეგორია</span>
+                <span class="pd-info__meta-value">{{ detail.category === 'fertilizer' ? 'სასუქი' : 'ნიადაგი' }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="pd-features">
+    <div class="pd-features__container">
+        <h2 class="pd-features__heading">მახასიათებლები</h2>
+        <div class="pd-features__grid">
+            @for (feature of detail.features; track feature) {
+            <div class="pd-features__item">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="10" fill="var(--color-green-mist)" />
+                    <path d="M6 10L9 13L14 7" stroke="var(--color-green-rich)" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span>{{ feature }}</span>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Usage Steps -->
+<section class="pd-usage">
+    <div class="pd-usage__container">
+        <h2 class="pd-usage__heading">გამოყენების ინსტრუქცია</h2>
+        <div class="pd-usage__grid">
+            @for (item of detail.usage; track item.step) {
+            <div class="pd-usage__step">
+                <span class="pd-usage__step-num">{{ item.step }}</span>
+                <h3 class="pd-usage__step-title">{{ item.title }}</h3>
+                <p class="pd-usage__step-desc">{{ item.description }}</p>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Composition -->
+<section class="pd-composition">
+    <div class="pd-composition__container">
+        <h2 class="pd-composition__heading">შემადგენლობა</h2>
+        <div class="pd-composition__list">
+            @for (item of detail.composition; track item) {
+            <div class="pd-composition__item">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="4" fill="var(--color-green-vibrant)" />
+                </svg>
+                <span>{{ item }}</span>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Tips -->
+<section class="pd-tips">
+    <div class="pd-tips__container">
+        <h2 class="pd-tips__heading">სასარგებლო რჩევები</h2>
+        <div class="pd-tips__list">
+            @for (tip of detail.tips; track tip; let i = $index) {
+            <div class="pd-tips__item">
+                <span class="pd-tips__item-num">{{ i + 1 }}</span>
+                <p class="pd-tips__item-text">{{ tip }}</p>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Related Products -->
+@if (relatedProducts.length > 0) {
+<section class="pd-related">
+    <div class="pd-related__container">
+        <h2 class="pd-related__heading">მსგავსი პროდუქტები</h2>
+        <div class="pd-related__grid">
+            @for (p of relatedProducts; track p.slug) {
+            <a [routerLink]="['/products', p.slug]" class="pd-related__card">
+                <div class="pd-related__card-visual" [style.background]="p.gradient"></div>
+                <div class="pd-related__card-info">
+                    <h3 class="pd-related__card-name">{{ p.name }}</h3>
+                    <span class="pd-related__card-price">{{ p.price }}</span>
+                </div>
+                <span class="pd-related__card-link">
+                    დეტალურად
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </a>
+            }
+        </div>
+    </div>
+</section>
+}
+
+<!-- CTA -->
+<section class="pd-cta">
+    <div class="pd-cta__container">
+        <h2 class="pd-cta__title">გსურთ შეკვეთა?</h2>
+        <p class="pd-cta__text">დაგვიკავშირდით და ჩვენი კონსულტანტი დაგეხმარებათ სწორი პროდუქტის შერჩევაში.</p>
+        <div class="pd-cta__actions">
+            <a routerLink="/contact" class="pd-cta__btn pd-cta__btn--primary">
+                <span>დაგვიკავშირდით</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+            <a routerLink="/products" class="pd-cta__btn pd-cta__btn--secondary">
+                ყველა პროდუქტი
+            </a>
+        </div>
+    </div>
+</section>
+}

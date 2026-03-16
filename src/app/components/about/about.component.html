@@ -1,0 +1,85 @@
+<section class="about" id="about">
+  <div class="about__container">
+    <!-- Section Header -->
+    <div class="about__header">
+      <span class="about__label">ჩვენს შესახებ</span>
+      <h2 class="about__title">
+        ვქმნით მწვანე სივრცეებს,
+        <span class="about__title-accent">რომლებიც შთააგონებს</span>
+      </h2>
+      <p class="about__subtitle">
+        Pteris 2010 წლიდან ეხმარება კლიენტებს შექმნან ჰარმონიული გარემო მცენარეების საშუალებით.
+        ჩვენ გვჯერა, რომ ყოველ სივრცეს შეუძლია გახდეს ბოტანიკური ოაზისი.
+      </p>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="about__grid">
+      <!-- Left: Image / Visual -->
+      <div class="about__visual">
+        <div class="about__image-wrapper">
+          <div class="about__image-placeholder">
+            <svg viewBox="0 0 400 500" fill="none">
+              <rect width="400" height="500" rx="24" fill="url(#aboutGrad)"/>
+              <path d="M200 80 C200 80, 100 200, 100 300 C100 380, 142 440, 200 440 C258 440, 300 380, 300 300 C300 200 200 80 200 80Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+              <path d="M200 120 C200 120, 130 210, 130 290 C130 360, 160 410, 200 410 C240 410, 270 360, 270 290 C270 210 200 120 200 120Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+              <path d="M200 160 C200 160, 155 225, 155 280 C155 330, 175 370, 200 370 C225 370, 245 330, 245 280 C245 225 200 160 200 160Z" fill="rgba(82,183,136,0.15)" stroke="rgba(82,183,136,0.3)" stroke-width="1"/>
+              <line x1="200" y1="120" x2="200" y2="410" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+              <defs>
+                <linearGradient id="aboutGrad" x1="0" y1="0" x2="400" y2="500">
+                  <stop offset="0%" stop-color="#1B4332"/>
+                  <stop offset="100%" stop-color="#2D6A4F"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="about__image-badge">
+            <span class="about__image-badge-number">15+</span>
+            <span class="about__image-badge-text">წელი ბაზარზე</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Features -->
+      <div class="about__features">
+        @for (feature of features; track feature.title) {
+          <div class="about__feature">
+            <div class="about__feature-icon">
+              @switch (feature.icon) {
+                @case ('leaf') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 3C12 3 4 10 4 16C4 20.4 7.6 22 12 22C16.4 22 20 20.4 20 16C20 10 12 3 12 3Z" stroke-linecap="round"/>
+                    <path d="M12 8V20" stroke-linecap="round"/>
+                    <path d="M8 14L12 10L16 14" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                }
+                @case ('shield') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2L3 7V12C3 17.5 7 21.5 12 23C17 21.5 21 17.5 21 12V7L12 2Z" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 12L11 14L15 10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                }
+                @case ('globe') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M2 12H22"/>
+                    <path d="M12 2C14.5 4.5 16 8 16 12C16 16 14.5 19.5 12 22C9.5 19.5 8 16 8 12C8 8 9.5 4.5 12 2Z"/>
+                  </svg>
+                }
+                @case ('heart') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20.84 4.61C20.3292 4.099 19.7228 3.69364 19.0554 3.41708C18.3879 3.14052 17.6725 2.99817 16.95 2.99817C16.2275 2.99817 15.5121 3.14052 14.8446 3.41708C14.1772 3.69364 13.5708 4.099 13.06 4.61L12 5.67L10.94 4.61C9.9083 3.57831 8.50903 2.99871 7.05 2.99871C5.59096 2.99871 4.19169 3.57831 3.16 4.61C2.1283 5.64169 1.54871 7.04097 1.54871 8.5C1.54871 9.95903 2.1283 11.3583 3.16 12.39L12 21.23L20.84 12.39C21.351 11.8792 21.7563 11.2728 22.0329 10.6054C22.3095 9.93789 22.4518 9.22249 22.4518 8.5C22.4518 7.77751 22.3095 7.0621 22.0329 6.3946C21.7563 5.72714 21.351 5.12076 20.84 4.61Z" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                }
+              }
+            </div>
+            <div class="about__feature-content">
+              <h3 class="about__feature-title">{{ feature.title }}</h3>
+              <p class="about__feature-desc">{{ feature.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

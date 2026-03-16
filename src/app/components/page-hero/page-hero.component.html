@@ -1,0 +1,27 @@
+<section class="page-hero">
+    <div class="page-hero__bg">
+        <div class="page-hero__bg-image"></div>
+        <div class="page-hero__bg-overlay"></div>
+        <div class="page-hero__bg-pattern"></div>
+        <div class="page-hero__bg-orb page-hero__bg-orb--1"></div>
+        <div class="page-hero__bg-orb page-hero__bg-orb--2"></div>
+    </div>
+
+    <div class="page-hero__container">
+        @if (label) {
+        <span class="page-hero__label">{{ label }}</span>
+        }
+        <h1 class="page-hero__title">
+            {{ title }}
+            @if (titleAccent) {
+            <span class="page-hero__title-accent">{{ titleAccent }}</span>
+            }
+            @if (titleSuffix) {
+            {{ titleSuffix }}
+            }
+        </h1>
+        @if (subtitle) {
+        <p class="page-hero__subtitle">{{ subtitle }}</p>
+        }
+    </div>
+</section>
