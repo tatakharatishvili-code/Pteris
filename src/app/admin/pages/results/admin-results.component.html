@@ -1,0 +1,184 @@
+<div class="results-admin">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">შედეგები</h1>
+      <p class="page-subtitle">მართე პროექტების შედეგები, ფოტოები და სტატისტიკა</p>
+    </div>
+
+    <button type="button" class="btn btn-secondary" (click)="onCreateNew()">
+      ახალი შედეგი
+    </button>
+  </div>
+
+  @if (pageError()) {
+    <div class="alert error">{{ pageError() }}</div>
+  }
+
+  @if (successMessage()) {
+    <div class="alert success">{{ successMessage() }}</div>
+  }
+
+  <div class="content-grid">
+    <!-- LIST PANEL -->
+    <section class="list-panel">
+      <div class="panel-header">
+        <h2>არსებული შედეგები</h2>
+        <button type="button" class="btn btn-ghost" (click)="fetchAll()" [disabled]="loading()">
+          განახლება
+        </button>
+      </div>
+
+      @if (loading()) {
+        <div class="empty-state">იტვირთება...</div>
+      } @else if (!results().length) {
+        <div class="empty-state">ჯერ შედეგები არ არის დამატებული</div>
+      } @else {
+        <div class="result-list">
+          @for (result of results(); track trackById($index, result)) {
+            <article class="result-card" [class.selected]="selectedId() === result._id">
+              <div class="result-images">
+                @if (result.beforeImage) {
+                  <div class="thumb-wrap">
+                    <span class="thumb-label">Before</span>
+                    <img [src]="result.beforeImage" alt="before" />
+                  </div>
+                }
+                @if (result.afterImage) {
+                  <div class="thumb-wrap">
+                    <span class="thumb-label">After</span>
+                    <img [src]="result.afterImage" alt="after" />
+                  </div>
+                }
+              </div>
+
+              <div class="result-body">
+                <div class="result-title-row">
+                  <h3>{{ result.client }}</h3>
+                  <span class="badge">{{ result.category }}</span>
+                </div>
+                <p class="result-meta">
+                  {{ result.location }} · {{ result.year }}
+                </p>
+                <div class="result-stats">
+                  <span>{{ result.plantsCount }} მცენარე</span>
+                  <span>{{ result.area }}</span>
+                  <span>{{ result.duration }}</span>
+                </div>
+              </div>
+
+              <div class="result-actions">
+                <button type="button" class="btn btn-ghost" (click)="onSelectForEdit(result)">
+                  რედაქტირება
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="onDelete(result)"
+                  [disabled]="deletingId() === result._id"
+                >
+                  {{ deletingId() === result._id ? 'იშლება...' : 'წაშლა' }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- FORM PANEL -->
+    <section class="form-panel">
+      <div class="panel-header">
+        <h2>{{ isEditing() ? 'შედეგის განახლება' : 'ახალი შედეგი' }}</h2>
+      </div>
+
+      @if (formError()) {
+        <div class="alert error">{{ formError() }}</div>
+      }
+
+      <form class="result-form" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <label>
+            <span>კლიენტი *</span>
+            <input type="text" name="client" [(ngModel)]="formClient" placeholder="მაგ: TBC Bank HQ" />
+          </label>
+          <label>
+            <span>კატეგორია *</span>
+            <input type="text" name="category" [(ngModel)]="formCategory" placeholder="მაგ: ოფისი" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            <span>ლოკაცია *</span>
+            <input type="text" name="location" [(ngModel)]="formLocation" placeholder="მაგ: თბილისი" />
+          </label>
+          <label>
+            <span>წელი *</span>
+            <input type="number" name="year" [(ngModel)]="formYear" min="2000" max="2100" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            <span>მცენარეების რაოდენობა *</span>
+            <input type="text" name="plantsCount" [(ngModel)]="formPlantsCount" placeholder="მაგ: 120+" />
+          </label>
+          <label>
+            <span>ფართობი *</span>
+            <input type="text" name="area" [(ngModel)]="formArea" placeholder="მაგ: 800 მ²" />
+          </label>
+        </div>
+
+        <label>
+          <span>ხანგრძლივობა *</span>
+          <input type="text" name="duration" [(ngModel)]="formDuration" placeholder="მაგ: 3 თვე" />
+        </label>
+
+        <div class="form-row">
+          <label>
+            <span>Before ფოტო</span>
+            <input type="file" accept="image/*" (change)="onBeforeImageChange($event)" />
+          </label>
+          <label>
+            <span>After ფოტო</span>
+            <input type="file" accept="image/*" (change)="onAfterImageChange($event)" />
+          </label>
+        </div>
+
+        @if (beforeImagePreview() || afterImagePreview()) {
+          <div class="before-after-preview">
+            @if (beforeImagePreview()) {
+              <div class="preview-item">
+                <span>Before</span>
+                <img [src]="beforeImagePreview()!" alt="before preview" />
+              </div>
+            }
+            @if (afterImagePreview()) {
+              <div class="preview-item">
+                <span>After</span>
+                <img [src]="afterImagePreview()!" alt="after preview" />
+              </div>
+            }
+          </div>
+        }
+
+        <label>
+          <span>დამატებითი ფოტოები (მაქს. 10)</span>
+          <input type="file" accept="image/*" multiple (change)="onImagesChange($event)" />
+        </label>
+
+        @if (imagePreviews().length) {
+          <div class="images-preview">
+            @for (src of imagePreviews(); track src) {
+              <img [src]="src" alt="gallery preview" />
+            }
+          </div>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'ინახება...' : (isEditing() ? 'განახლება' : 'დამატება') }}
+        </button>
+      </form>
+    </section>
+  </div>
+</div>

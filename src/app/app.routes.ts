@@ -1,6 +1,45 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './admin/guards/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./admin/pages/login/admin-login.component').then(
+        (m) => m.AdminLoginComponent
+      ),
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./admin/layout/admin-layout.component').then(
+        (m) => m.AdminLayoutComponent
+      ),
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./admin/pages/dashboard/admin-dashboard.component').then(
+            (m) => m.AdminDashboardComponent
+          ),
+      },
+      {
+        path: 'services',
+        loadComponent: () =>
+          import('./admin/pages/services/admin-services.component').then(
+            (m) => m.AdminServicesComponent
+          ),
+      },
+      {
+        path: 'results',
+        loadComponent: () =>
+          import('./admin/pages/results/admin-results.component').then(
+            (m) => m.AdminResultsComponent
+          ),
+      },
+    ],
+  },
   {
     path: '',
     loadComponent: () =>

@@ -1,0 +1,142 @@
+<div class="services-admin">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">სერვისები</h1>
+      <p class="page-subtitle">მართე სერვისების სია, აღწერები და ფუნქციები</p>
+    </div>
+
+    <button type="button" class="btn btn-secondary" (click)="onCreateNew()">
+      ახალი სერვისი
+    </button>
+  </div>
+
+  @if (pageError()) {
+    <div class="alert error">{{ pageError() }}</div>
+  }
+
+  @if (successMessage()) {
+    <div class="alert success">{{ successMessage() }}</div>
+  }
+
+  <div class="content-grid">
+    <section class="list-panel">
+      <div class="panel-header">
+        <h2>არსებული სერვისები</h2>
+        <button type="button" class="btn btn-ghost" (click)="fetchAll()" [disabled]="loading()">
+          განახლება
+        </button>
+      </div>
+
+      @if (loading()) {
+        <div class="empty-state">იტვირთება...</div>
+      } @else if (!services().length) {
+        <div class="empty-state">ჯერ სერვისები არ არის დამატებული</div>
+      } @else {
+        <div class="service-list">
+          @for (service of services(); track trackById($index, service)) {
+            <article class="service-card" [class.selected]="selectedId() === service._id">
+              <div class="service-head">
+                <h3>{{ service.name }}</h3>
+                @if (service.icon) {
+                  <img [src]="service.icon" [alt]="service.name" />
+                }
+              </div>
+
+              <p>{{ service.shortDescription }}</p>
+
+              @if (service.features.length) {
+                <ul>
+                  @for (feature of service.features; track feature) {
+                    <li>{{ feature }}</li>
+                  }
+                </ul>
+              }
+
+              <div class="service-actions">
+                <button type="button" class="btn btn-ghost" (click)="onSelectForEdit(service)">
+                  რედაქტირება
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="onDelete(service)"
+                  [disabled]="deletingId() === service._id"
+                >
+                  {{ deletingId() === service._id ? 'იშლება...' : 'წაშლა' }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="form-panel">
+      <div class="panel-header">
+        <h2>{{ isEditing() ? 'სერვისის განახლება' : 'ახალი სერვისი' }}</h2>
+      </div>
+
+      @if (formError()) {
+        <div class="alert error">{{ formError() }}</div>
+      }
+
+      <form class="service-form" (ngSubmit)="onSubmit()">
+        <label>
+          <span>Name *</span>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="formName"
+            placeholder="მაგ: ოფისის გამწვანება"
+          />
+        </label>
+
+        <label>
+          <span>Short Description *</span>
+          <textarea
+            name="shortDescription"
+            rows="3"
+            [(ngModel)]="formShortDescription"
+            placeholder="მოკლე აღწერა"
+          ></textarea>
+        </label>
+
+        <label>
+          <span>Long Description *</span>
+          <textarea
+            name="longDescription"
+            rows="6"
+            [(ngModel)]="formLongDescription"
+            placeholder="ვრცელი აღწერა"
+          ></textarea>
+        </label>
+
+        <label>
+          <span>Features (ერთი ხაზი = ერთი feature)</span>
+          <textarea
+            name="features"
+            rows="5"
+            [(ngModel)]="formFeaturesText"
+            placeholder="მაგ:\nინდივიდუალური გეგმა\nმოვლის მონიტორინგი"
+          ></textarea>
+        </label>
+
+        <label>
+          <span>Icon (image)</span>
+          <input type="file" accept="image/*" (change)="onFileChange($event)" />
+        </label>
+
+        @if (iconPreview()) {
+          <div class="icon-preview">
+            <span>Preview</span>
+            <img [src]="iconPreview()!" alt="Service icon preview" />
+          </div>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'ინახება...' : (isEditing() ? 'განახლება' : 'დამატება') }}
+        </button>
+      </form>
+    </section>
+  </div>
+</div>
