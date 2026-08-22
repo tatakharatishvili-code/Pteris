@@ -115,4 +115,11 @@ export const routes: Routes = [
         (m) => m.CareDetailComponent
       ),
   },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./pages/contact/contact-page.component').then(
+        (m) => m.ContactPageComponent
+      ),
+  },
 ];

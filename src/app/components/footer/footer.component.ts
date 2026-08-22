@@ -22,7 +22,7 @@ export class FooterComponent {
     { label: 'ლანდშაფტის დიზაინი', anchor: '#services' },
     { label: 'ინტერიერის გამწვანება', anchor: '#services' },
     { label: 'მცენარეთა მოვლა', anchor: '#care' },
-    { label: 'კონსულტაცია', anchor: '#contact' },
+    { label: 'კონსულტაცია', anchor: '/contact' },
   ];
 
   socialLinks = [
