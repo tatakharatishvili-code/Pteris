@@ -26,7 +26,6 @@ export class HeaderComponent {
     { label: 'პარტნიორები', anchor: '/partners' },
     { label: 'პროდუქტები', anchor: '/products' },
     { label: 'მოვლა', anchor: '/care' },
-    { label: 'კონტაქტი', anchor: '/contact' },
   ];
 
   @HostListener('window:scroll')

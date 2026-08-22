@@ -12,10 +12,32 @@
     </div>
 
     <div class="results__grid">
-      @for (project of projects; track project.title; let i = $index) {
-        <div class="results__card" [class]="'results__card--' + (i + 1)">
-          <div class="results__card-visual">
-            <div class="results__card-overlay"></div>
+      @for (project of projects; track project.slug) {
+        <article class="results__card">
+          <div
+            class="results__ba"
+            #baSlider
+            (mousemove)="onSliderMove($event, project.slug, baSlider)"
+            (touchmove)="onSliderMove($event, project.slug, baSlider)"
+          >
+            <div class="results__ba-after" [style.background]="project.afterGradient">
+              <span class="results__ba-label results__ba-label--after">შემდეგ</span>
+            </div>
+            <div
+              class="results__ba-before"
+              [style.background]="project.beforeGradient"
+              [style.clip-path]="'inset(0 ' + (100 - getSliderPosition(project.slug)) + '% 0 0)'"
+            >
+              <span class="results__ba-label results__ba-label--before">მანამდე</span>
+            </div>
+            <div class="results__ba-handle" [style.left.%]="getSliderPosition(project.slug)">
+              <div class="results__ba-line"></div>
+              <div class="results__ba-knob" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M7 4L3 10L7 16M13 4L17 10L13 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
             <span class="results__card-category">{{ project.category }}</span>
           </div>
           <div class="results__card-content">
@@ -35,9 +57,14 @@
                 <span class="results__card-stat-label">ვადა</span>
               </div>
             </div>
+            <a [routerLink]="['/results', project.slug]" class="results__card-link">დეტალურად</a>
           </div>
-        </div>
+        </article>
       }
+    </div>
+
+    <div class="results__footer">
+      <a routerLink="/results" class="results__more">ყველა შედეგი <span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
