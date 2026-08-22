@@ -1,7 +1,7 @@
 @if (!isAdmin()) {
   <app-header />
 }
-<main>
+<main [class.admin-shell]="isAdmin()">
   <router-outlet />
 </main>
 @if (!isAdmin()) {

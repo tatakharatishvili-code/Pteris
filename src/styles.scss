@@ -16,6 +16,7 @@
 
   // Gradients
   --gradient-forest: linear-gradient(135deg, #1B4332 0%, #2D6A4F 50%, #52B788 100%);
+  --gradient-green:  linear-gradient(135deg, #2D6A4F 0%, #52B788 100%);
   --gradient-hero:   linear-gradient(160deg, #1B4332 0%, #2D6A4F 40%, #1B4332 100%);
   --gradient-gold:   linear-gradient(135deg, #C9A96E 0%, #E8D5A3 100%);
 
@@ -44,6 +45,7 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
   --space-4xl: 6rem;
+  --space-5xl: 8rem;
 
   // Border radius
   --radius-sm: 8px;
@@ -84,6 +86,16 @@ body {
   background-color: var(--color-cream);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+app-root > main:not(.admin-shell) section:not(.hero):not(.page-hero) {
+  padding-block: 24px !important;
+}
+
+@media (max-width: 640px) {
+  app-root > main:not(.admin-shell) section:not(.hero):not(.page-hero) {
+    padding-block: 16px !important;
+  }
 }
 
 a {
