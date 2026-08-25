@@ -1,4 +1,8 @@
-@if (detail) {
+@if (loading()) {
+<p class="content-status">პროდუქტი იტვირთება...</p>
+} @else if (error()) {
+<p class="content-status content-status--error">{{ error() }}</p>
+} @else if (detail) {
 <!-- Page Hero -->
 <app-page-hero [label]="detail.heroLabel" [title]="detail.name" [subtitle]="detail.heroSubtitle" />
 
@@ -21,7 +25,7 @@
             </div>
             <div class="pd-info__meta-item">
                 <span class="pd-info__meta-label">კატეგორია</span>
-                <span class="pd-info__meta-value">{{ detail.category === 'fertilizer' ? 'სასუქი' : 'ნიადაგი' }}</span>
+                <span class="pd-info__meta-value">პროდუქტი</span>
             </div>
         </div>
     </div>

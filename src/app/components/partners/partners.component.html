@@ -11,17 +11,19 @@
     <!-- Partners Marquee -->
     <div class="partners__marquee">
       <div class="partners__marquee-track">
-        @for (partner of partners; track partner.name) {
+        @for (partner of partners(); track partner._id) {
           <div class="partners__partner">
+            @if (partner.image) { <img [src]="partner.image" [alt]="partner.name" /> }
             <span class="partners__partner-name">{{ partner.name }}</span>
-            <span class="partners__partner-type">{{ partner.type }}</span>
+            <span class="partners__partner-type">{{ partner.category }}</span>
           </div>
         }
         <!-- Duplicate for seamless loop -->
-        @for (partner of partners; track partner.name + '-dup') {
+        @for (partner of partners(); track partner._id + '-dup') {
           <div class="partners__partner">
+            @if (partner.image) { <img [src]="partner.image" [alt]="partner.name" /> }
             <span class="partners__partner-name">{{ partner.name }}</span>
-            <span class="partners__partner-type">{{ partner.type }}</span>
+            <span class="partners__partner-type">{{ partner.category }}</span>
           </div>
         }
       </div>

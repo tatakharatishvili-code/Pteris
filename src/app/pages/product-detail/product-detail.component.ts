@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
-import { PRODUCTS_DATA, ProductItem } from '../products/products-page.component';
+import { ProductItem } from '../products/products-page.component';
+import { PublicContentService } from '../../services/public-content.service';
 
 export interface ProductDetail extends ProductItem {
     heroLabel: string;
@@ -331,25 +332,51 @@ const PRODUCT_DETAILS: Record<string, Omit<ProductDetail, keyof ProductItem>> = 
     styleUrl: './product-detail.component.scss',
 })
 export class ProductDetailComponent implements OnInit {
+    private readonly contentApi = inject(PublicContentService);
     product: ProductItem | null = null;
     detail: ProductDetail | null = null;
     relatedProducts: ProductItem[] = [];
+    loading = signal(true);
+    error = signal<string | null>(null);
 
     constructor(private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
-            const slug = params['slug'];
-            const base = PRODUCTS_DATA.find((p) => p.slug === slug);
-            const extra = PRODUCT_DETAILS[slug];
-
-            if (base && extra) {
-                this.product = base;
-                this.detail = { ...base, ...extra };
-                this.relatedProducts = PRODUCTS_DATA.filter(
-                    (p) => p.slug !== slug && p.category === base.category
-                ).slice(0, 3);
-            }
+            this.loading.set(true);
+            this.error.set(null);
+            this.contentApi.getProduct(params['slug']).subscribe({
+                next: (product) => {
+                    const base: ProductItem = {
+                        slug: product._id,
+                        name: product.name,
+                        category: 'product',
+                        price: `${product.price} ₾`,
+                        volume: product.volume ?? '—',
+                        description: product.characteristics?.[0] ?? '',
+                        gradient: 'linear-gradient(135deg, #1B4332, #52B788)',
+                    };
+                    this.product = base;
+                    this.detail = {
+                        ...base,
+                        heroLabel: 'პროდუქტი',
+                        heroSubtitle: product.characteristics?.join(' · ') || product.name,
+                        features: product.characteristics ?? [],
+                        usage: (product.instructions ?? []).map((item, index) => ({
+                            step: String(index + 1).padStart(2, '0'),
+                            title: item.name,
+                            description: item.description,
+                        })),
+                        composition: product.composition ?? [],
+                        tips: product.tips ?? [],
+                    };
+                    this.loading.set(false);
+                },
+                error: () => {
+                    this.error.set('პროდუქტი ვერ მოიძებნა');
+                    this.loading.set(false);
+                },
+            });
         });
     }
 }

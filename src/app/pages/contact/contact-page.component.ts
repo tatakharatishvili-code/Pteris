@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
+import { PublicContentService } from '../../services/public-content.service';
 
 @Component({
   selector: 'app-contact-page',
@@ -16,7 +17,10 @@ import { PageHeroComponent } from '../../components/page-hero/page-hero.componen
   styleUrl: './contact-page.component.scss',
 })
 export class ContactPageComponent {
-  readonly emailClientOpened = signal(false);
+  private readonly contentApi = inject(PublicContentService);
+  readonly submitting = signal(false);
+  readonly successMessage = signal<string | null>(null);
+  readonly errorMessage = signal<string | null>(null);
 
   readonly contactForm = new FormGroup({
     name: new FormControl('', {
@@ -49,7 +53,8 @@ export class ContactPageComponent {
   ];
 
   onSubmit(): void {
-    this.emailClientOpened.set(false);
+    this.successMessage.set(null);
+    this.errorMessage.set(null);
 
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
@@ -57,20 +62,23 @@ export class ContactPageComponent {
     }
 
     const value = this.contactForm.getRawValue();
-    const subject = encodeURIComponent(`Pteris — ${value.service}`);
-    const body = encodeURIComponent(
-      [
-        `სახელი: ${value.name}`,
-        `ელ-ფოსტა: ${value.email}`,
-        `ტელეფონი: ${value.phone || 'არ არის მითითებული'}`,
-        `სერვისი: ${value.service}`,
-        '',
-        value.message,
-      ].join('\n')
-    );
-
-    this.emailClientOpened.set(true);
-    window.location.href = `mailto:info@pteris.ge?subject=${subject}&body=${body}`;
+    this.submitting.set(true);
+    this.contentApi.submitMessage({
+      name: value.name.trim(),
+      email: value.email.trim(),
+      phone: value.phone.trim(),
+      message: `სერვისი: ${value.service}\n\n${value.message.trim()}`,
+    }).subscribe({
+      next: () => {
+        this.submitting.set(false);
+        this.successMessage.set('შეტყობინება წარმატებით გაიგზავნა. მალე დაგიკავშირდებით.');
+        this.contactForm.reset();
+      },
+      error: (error) => {
+        this.submitting.set(false);
+        this.errorMessage.set(error?.error?.message ?? 'შეტყობინება ვერ გაიგზავნა. სცადეთ ხელახლა.');
+      },
+    });
   }
 
   isInvalid(controlName: keyof ContactPageComponent['contactForm']['controls']): boolean {

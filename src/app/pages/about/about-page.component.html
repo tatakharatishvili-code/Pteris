@@ -197,18 +197,22 @@
       </p>
     </div>
     <div class="about-team__grid">
-      @for (member of teamMembers; track member.name) {
+      @for (member of coworkers(); track member._id) {
       <div class="about-team__card">
         <div class="about-team__card-avatar">
+          @if (member.image) {
+          <img [src]="member.image" [alt]="member.name" />
+          } @else {
           <svg viewBox="0 0 80 80" fill="none">
             <circle cx="40" cy="40" r="38" fill="rgba(82,183,136,0.1)" stroke="rgba(82,183,136,0.2)" stroke-width="1" />
             <circle cx="40" cy="30" r="12" fill="rgba(82,183,136,0.15)" />
             <path d="M20 65C20 52 28 44 40 44C52 44 60 52 60 65" fill="rgba(82,183,136,0.12)" />
           </svg>
+          }
         </div>
         <h3 class="about-team__card-name">{{ member.name }}</h3>
-        <span class="about-team__card-role">{{ member.role }}</span>
-        <p class="about-team__card-bio">{{ member.bio }}</p>
+        <span class="about-team__card-role">{{ member.position }}</span>
+        <p class="about-team__card-bio">{{ member.description }}</p>
       </div>
       }
     </div>

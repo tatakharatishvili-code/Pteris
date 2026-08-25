@@ -121,6 +121,16 @@ button {
   background: transparent;
 }
 
+.content-status {
+  padding: var(--space-xl);
+  text-align: center;
+  color: rgba(27, 67, 50, 0.65);
+
+  &--error {
+    color: #9b1c31;
+  }
+}
+
 // ── Utility Classes ──
 .container {
   width: 100%;

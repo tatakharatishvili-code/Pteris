@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { PublicContentService, PublicPartner } from '../../services/public-content.service';
 
 @Component({
   selector: 'app-partners',
@@ -9,20 +10,14 @@ import { RouterLink } from '@angular/router';
   templateUrl: './partners.component.html',
   styleUrl: './partners.component.scss',
 })
-export class PartnersComponent {
-  partners = [
-    { name: 'Radisson Blu', type: 'სასტუმრო' },
-    { name: 'TBC Bank', type: 'ფინანსები' },
-    { name: 'Stamba Hotel', type: 'სასტუმრო' },
-    { name: 'Rooms Hotel', type: 'სასტუმრო' },
-    { name: 'BOG', type: 'ფინანსები' },
-    { name: 'Tbilisi Mall', type: 'სავაჭრო' },
-    { name: 'East Point', type: 'სავაჭრო' },
-    { name: 'Wyndham Grand', type: 'სასტუმრო' },
-    { name: 'Sheraton', type: 'სასტუმრო' },
-    { name: 'Hilton Garden', type: 'სასტუმრო' },
-    { name: 'Liberty Bank', type: 'ფინანსები' },
-    { name: 'Galleria Tbilisi', type: 'სავაჭრო' },
-  ];
+export class PartnersComponent implements OnInit {
+  private readonly contentApi = inject(PublicContentService);
+  readonly partners = signal<PublicPartner[]>([]);
+
+  ngOnInit(): void {
+    this.contentApi.getPartners().subscribe({
+      next: (partners) => this.partners.set(partners),
+    });
+  }
 
 }

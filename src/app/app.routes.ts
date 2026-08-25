@@ -4,6 +4,7 @@ import { authGuard } from './admin/guards/auth.guard';
 export const routes: Routes = [
   {
     path: 'admin',
+    pathMatch: 'full',
     loadComponent: () =>
       import('./admin/pages/login/admin-login.component').then(
         (m) => m.AdminLoginComponent
@@ -17,6 +18,7 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
     children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -36,6 +38,34 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./admin/pages/results/admin-results.component').then(
             (m) => m.AdminResultsComponent
+          ),
+      },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./admin/pages/products/admin-products.component').then(
+            (m) => m.AdminProductsComponent
+          ),
+      },
+      {
+        path: 'lessons',
+        loadComponent: () =>
+          import('./admin/pages/lessons/admin-lessons.component').then(
+            (m) => m.AdminLessonsComponent
+          ),
+      },
+      {
+        path: 'coworkers',
+        loadComponent: () =>
+          import('./admin/pages/coworkers/admin-coworkers.component').then(
+            (m) => m.AdminCoworkersComponent
+          ),
+      },
+      {
+        path: 'messages',
+        loadComponent: () =>
+          import('./admin/pages/messages/admin-messages.component').then(
+            (m) => m.AdminMessagesComponent
           ),
       },
     ],

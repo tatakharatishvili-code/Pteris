@@ -5,17 +5,14 @@
 <!-- Filters + Grid -->
 <section class="prod-list">
     <div class="prod-list__container">
-        <!-- Category Filter -->
-        <div class="prod-list__filters">
-            @for (cat of categories; track cat.id) {
-            <button class="prod-list__filter" [class.active]="activeCategory() === cat.id"
-                (click)="setCategory(cat.id)">
-                {{ cat.label }}
-            </button>
-            }
-        </div>
-
         <!-- Products Grid -->
+        @if (loading()) {
+        <p class="content-status">პროდუქტები იტვირთება...</p>
+        } @else if (error()) {
+        <p class="content-status content-status--error">{{ error() }}</p>
+        } @else if (!products.length) {
+        <p class="content-status">პროდუქტები მალე დაემატება.</p>
+        }
         <div class="prod-list__grid">
             @for (product of filteredProducts; track product.slug) {
             <a [routerLink]="['/products', product.slug]" class="prod-list__card">

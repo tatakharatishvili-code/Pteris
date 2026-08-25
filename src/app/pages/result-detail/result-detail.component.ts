@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
 import { PROJECTS_DATA, ProjectItem } from '../results/results-page.component';
+import { PublicContentService, PublicResult } from '../../services/public-content.service';
 
 export interface ProjectDetail extends ProjectItem {
     heroSubtitle: string;
@@ -160,30 +161,34 @@ const PROJECT_DETAILS: Record<string, Omit<ProjectDetail, keyof ProjectItem>> = 
 @Component({
     selector: 'app-result-detail',
     standalone: true,
-    imports: [CommonModule, RouterLink, PageHeroComponent],
+    imports: [CommonModule, PageHeroComponent],
     templateUrl: './result-detail.component.html',
     styleUrl: './result-detail.component.scss',
 })
 export class ResultDetailComponent implements OnInit {
-    project: ProjectItem | null = null;
-    detail: ProjectDetail | null = null;
-    otherProjects: ProjectItem[] = [];
+    private readonly contentApi = inject(PublicContentService);
+    detail: PublicResult | null = null;
     sliderPosition = 50;
+    loading = signal(true);
+    error = signal<string | null>(null);
 
     constructor(private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
-            const slug = params['slug'];
-            const base = PROJECTS_DATA.find((p) => p.slug === slug);
-            const extra = PROJECT_DETAILS[slug];
-
-            if (base && extra) {
-                this.project = base;
-                this.detail = { ...base, ...extra };
-                this.otherProjects = PROJECTS_DATA.filter((p) => p.slug !== slug).slice(0, 3);
-                this.sliderPosition = 50;
-            }
+            this.loading.set(true);
+            this.error.set(null);
+            this.contentApi.getResult(params['slug']).subscribe({
+                next: (result) => {
+                    this.detail = result;
+                    this.sliderPosition = 50;
+                    this.loading.set(false);
+                },
+                error: () => {
+                    this.error.set('შედეგი ვერ მოიძებნა');
+                    this.loading.set(false);
+                },
+            });
         });
     }
 
@@ -193,5 +198,9 @@ export class ResultDetailComponent implements OnInit {
             event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
         const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
         this.sliderPosition = (x / rect.width) * 100;
+    }
+
+    imageBackground(url: string, fallback: string): string {
+        return url ? `center / cover no-repeat url("${url}")` : fallback;
     }
 }

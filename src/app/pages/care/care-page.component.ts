@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
+import { PublicContentService } from '../../services/public-content.service';
 
 export interface CareGuide {
     slug: string;
@@ -155,29 +156,42 @@ export const CARE_GUIDES_DATA: CareGuide[] = [
     templateUrl: './care-page.component.html',
     styleUrl: './care-page.component.scss',
 })
-export class CarePageComponent {
-    activeCategory = signal('all');
+export class CarePageComponent implements OnInit {
+    private readonly contentApi = inject(PublicContentService);
+    loading = signal(true);
+    error = signal<string | null>(null);
 
-    categories = [
-        { id: 'all', label: 'ყველა' },
-        { id: 'watering', label: 'მორწყვა' },
-        { id: 'light', label: 'განათება' },
-        { id: 'soil', label: 'ნიადაგი' },
-        { id: 'health', label: 'ჯანმრთელობა' },
-        { id: 'seasonal', label: 'სეზონური' },
-        { id: 'special', label: 'სპეციალური' },
-    ];
+    guides: CareGuide[] = [];
 
-    guides = CARE_GUIDES_DATA;
+    ngOnInit(): void {
+        this.contentApi.getLessons().subscribe({
+            next: (lessons) => {
+                this.guides = lessons.map((lesson, index) => ({
+                    slug: lesson._id,
+                    title: lesson.name,
+                    category: 'all',
+                    difficulty: 'გზამკვლევი',
+                    readTime: `${Math.max(3, lesson.steps.length * 2)} წთ`,
+                    description: lesson.shortDescription,
+                    icon: ['✦', '◉', '◇'][index % 3],
+                    gradient: this.gradients[index % this.gradients.length],
+                }));
+                this.loading.set(false);
+            },
+            error: () => {
+                this.error.set('გაკვეთილების ჩატვირთვა ვერ მოხერხდა');
+                this.loading.set(false);
+            },
+        });
+    }
 
     get filteredGuides(): CareGuide[] {
-        const cat = this.activeCategory();
-        return cat === 'all'
-            ? this.guides
-            : this.guides.filter((g) => g.category === cat);
+        return this.guides;
     }
 
-    setCategory(id: string): void {
-        this.activeCategory.set(id);
-    }
+    private readonly gradients = [
+        'linear-gradient(135deg, #1B4332, #52B788)',
+        'linear-gradient(135deg, #C9A96E, #95D5B2)',
+        'linear-gradient(135deg, #2D6A4F, #D8F3DC)',
+    ];
 }

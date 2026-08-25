@@ -12,42 +12,23 @@
     </div>
 
     <div class="care__grid">
-      @for (tip of tips; track tip.title; let i = $index) {
-        <div class="care__card">
+      @for (tip of lessons(); track tip._id; let i = $index) {
+        <a class="care__card" [routerLink]="['/care', tip._id]">
           <div class="care__card-icon">
-            @switch (tip.icon) {
-              @case ('water') {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.69L17.66 8.35C19.02 9.71 19.84 11.36 19.97 13.12C20.1 14.88 19.54 16.63 18.38 18.01C17.22 19.39 15.53 20.28 13.69 20.49C11.85 20.7 10 20.22 8.5 19.12C7 18.02 5.96 16.39 5.57 14.54C5.18 12.7 5.47 10.77 6.39 9.12L12 2.69Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              }
-              @case ('light') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1V3"/><path d="M12 21V23"/><path d="M4.22 4.22L5.64 5.64"/><path d="M18.36 18.36L19.78 19.78"/><path d="M1 12H3"/><path d="M21 12H23"/><path d="M4.22 19.78L5.64 18.36"/><path d="M18.36 5.64L19.78 4.22"/></svg>
-              }
-              @case ('soil') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 22H22"/><path d="M12 2V8"/><path d="M12 8C15 8 18 10 18 14H6C6 10 9 8 12 8Z"/><path d="M5 18H19"/><path d="M6 14H18V18H6V14Z"/></svg>
-              }
-              @case ('temp') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 14.76V3.5C14 2.83696 13.7366 2.20107 13.2678 1.73223C12.7989 1.26339 12.163 1 11.5 1C10.837 1 10.2011 1.26339 9.73223 1.73223C9.26339 2.20107 9 2.83696 9 3.5V14.76C8.14216 15.3181 7.49891 16.1437 7.16765 17.1068C6.83639 18.0698 6.83514 19.1145 7.16408 20.0783C7.49302 21.0422 8.13427 21.8694 8.99077 22.4296C9.84728 22.9898 10.8695 23.2504 11.9 23.17C12.7104 23.1164 13.489 22.8468 14.1563 22.3885C14.8235 21.9303 15.3559 21.2997 15.6963 20.5637C16.0368 19.8277 16.1726 19.0134 16.0896 18.2065C16.0066 17.3996 15.7079 16.63 15.224 15.976"/></svg>
-              }
-              @case ('humidity') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.69L17.66 8.35C19.1 9.79 20 11.82 20 14C20 18.42 16.42 22 12 22C7.58 22 4 18.42 4 14C4 11.82 4.9 9.79 6.34 8.35L12 2.69Z"/><path d="M8 14C8 16.21 9.79 18 12 18" stroke-linecap="round"/></svg>
-              }
-              @case ('fertilize') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22V12"/><path d="M12 12C12 12 14 8 18 6C18 10 14 12 12 12Z"/><path d="M12 12C12 12 10 8 6 6C6 10 10 12 12 12Z"/><path d="M12 17C12 17 14 14 17 13"/><path d="M12 17C12 17 10 14 7 13"/></svg>
-              }
-            }
           </div>
           <div class="care__card-number">{{ '0' + (i + 1) }}</div>
-          <h3 class="care__card-title">{{ tip.title }}</h3>
-          <p class="care__card-desc">{{ tip.description }}</p>
+          <h3 class="care__card-title">{{ tip.name }}</h3>
+          <p class="care__card-desc">{{ tip.shortDescription }}</p>
           <div class="care__card-tip">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/>
               <path d="M7 4V7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
               <circle cx="7" cy="10" r="0.5" fill="currentColor"/>
             </svg>
-            <span>{{ tip.tip }}</span>
+            <span>{{ tip.advices[0] || 'დეტალური ინსტრუქცია იხილეთ გაკვეთილში.' }}</span>
           </div>
-        </div>
+        </a>
       }
     </div>
 

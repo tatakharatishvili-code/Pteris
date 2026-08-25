@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
+import { PublicContentService, PublicCoworker } from '../../services/public-content.service';
 
 @Component({
   selector: 'app-about-page',
@@ -9,7 +10,15 @@ import { PageHeroComponent } from '../../components/page-hero/page-hero.componen
   templateUrl: './about-page.component.html',
   styleUrl: './about-page.component.scss',
 })
-export class AboutPageComponent {
+export class AboutPageComponent implements OnInit {
+  private readonly contentApi = inject(PublicContentService);
+  readonly coworkers = signal<PublicCoworker[]>([]);
+
+  ngOnInit(): void {
+    this.contentApi.getCoworkers().subscribe({
+      next: (coworkers) => this.coworkers.set(coworkers),
+    });
+  }
   features = [
     {
       icon: 'leaf',
@@ -74,29 +83,6 @@ export class AboutPageComponent {
       title: 'ციფრული ტრანსფორმაცია',
       description:
         'გავუშვით ონლაინ კონსულტაციების პლატფორმა და მცენარეთა მოვლის ინტელექტუალური სისტემა, რომელიც კლიენტებს პერსონალიზებულ რჩევებს სთავაზობს.',
-    },
-  ];
-
-  teamMembers = [
-    {
-      name: 'ნიკა ჩხეიძე',
-      role: 'თანადამფუძნებელი & მთავარი ბოტანიკოსი',
-      bio: '20 წელზე მეტი გამოცდილება. სწავლობდა კიუ ბოტანიკურ ბაღში, ლონდონი.',
-    },
-    {
-      name: 'ანა ხარატიშვილი',
-      role: 'თანადამფუძნებელი & ლანდშაფტის დიზაინერი',
-      bio: 'იტალიის პოლიტექნიკური უნივერსიტეტის კურსდამთავრებული. ეკო-დიზაინის ექსპერტი.',
-    },
-    {
-      name: 'გიორგი მაისურაძე',
-      role: 'პროექტების მენეჯერი',
-      bio: '10 წლიანი გამოცდილება მშენებლობისა და გამწვანების პროექტებში.',
-    },
-    {
-      name: 'მარიამ ბერიძე',
-      role: 'მცენარეთა მოვლის ხელმძღვანელი',
-      bio: 'აგრონომი. სპეციალიზდება ტროპიკულ და სუბტროპიკულ მცენარეებზე.',
     },
   ];
 

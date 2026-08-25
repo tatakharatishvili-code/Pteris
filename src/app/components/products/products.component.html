@@ -11,43 +11,29 @@
       </p>
     </div>
 
-    <!-- Category Filter -->
-    <div class="products__filters">
-      @for (cat of categories; track cat.id) {
-        <button
-          class="products__filter"
-          [class.active]="activeCategory() === cat.id"
-          (click)="setCategory(cat.id)"
-        >
-          {{ cat.label }}
-        </button>
-      }
-    </div>
-
     <!-- Products Grid -->
+    @if (loading()) { <p class="content-status">პროდუქტები იტვირთება...</p> }
     <div class="products__grid">
-      @for (product of filteredProducts; track product.name) {
-        <div class="products__card">
+      @for (product of products(); track product._id; let i = $index) {
+        <a class="products__card" [routerLink]="['/products', product._id]">
           <div class="products__card-visual">
             <div class="products__card-gradient"></div>
-            @if (product.badge) {
-              <span class="products__card-badge">{{ product.badge }}</span>
-            }
+            @if (i === 0) { <span class="products__card-badge">ახალი</span> }
           </div>
           <div class="products__card-info">
             <div class="products__card-top">
               <h3 class="products__card-name">{{ product.name }}</h3>
-              <span class="products__card-price">{{ product.price }}</span>
+              <span class="products__card-price">{{ product.price }} ₾</span>
             </div>
-            <p class="products__card-desc">{{ product.description }}</p>
-            <button class="products__card-btn">
+            <p class="products__card-desc">{{ product.characteristics[0] || product.volume }}</p>
+            <span class="products__card-btn">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
-              კალათაში
-            </button>
+              დეტალურად
+            </span>
           </div>
-        </div>
+        </a>
       }
     </div>
 

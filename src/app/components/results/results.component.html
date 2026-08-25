@@ -12,25 +12,26 @@
     </div>
 
     <div class="results__grid">
-      @for (project of projects; track project.slug) {
+      @if (loading()) { <p class="content-status">შედეგები იტვირთება...</p> }
+      @for (project of projects(); track project._id) {
         <article class="results__card">
           <div
             class="results__ba"
             #baSlider
-            (mousemove)="onSliderMove($event, project.slug, baSlider)"
-            (touchmove)="onSliderMove($event, project.slug, baSlider)"
+            (mousemove)="onSliderMove($event, project._id, baSlider)"
+            (touchmove)="onSliderMove($event, project._id, baSlider)"
           >
-            <div class="results__ba-after" [style.background]="project.afterGradient">
+            <div class="results__ba-after" [style.background]="imageBackground(project.afterImage, 'linear-gradient(160deg, #1B4332, #52B788)')">
               <span class="results__ba-label results__ba-label--after">შემდეგ</span>
             </div>
             <div
               class="results__ba-before"
-              [style.background]="project.beforeGradient"
-              [style.clip-path]="'inset(0 ' + (100 - getSliderPosition(project.slug)) + '% 0 0)'"
+              [style.background]="imageBackground(project.beforeImage, 'linear-gradient(160deg, #8B8B8B, #C4C4C4)')"
+              [style.clip-path]="'inset(0 ' + (100 - getSliderPosition(project._id)) + '% 0 0)'"
             >
               <span class="results__ba-label results__ba-label--before">მანამდე</span>
             </div>
-            <div class="results__ba-handle" [style.left.%]="getSliderPosition(project.slug)">
+            <div class="results__ba-handle" [style.left.%]="getSliderPosition(project._id)">
               <div class="results__ba-line"></div>
               <div class="results__ba-knob" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -41,23 +42,23 @@
             <span class="results__card-category">{{ project.category }}</span>
           </div>
           <div class="results__card-content">
-            <h3 class="results__card-title">{{ project.title }}</h3>
-            <p class="results__card-desc">{{ project.description }}</p>
+            <h3 class="results__card-title">{{ project.client }}</h3>
+            <p class="results__card-desc">{{ project.location }} · {{ project.year }}</p>
             <div class="results__card-stats">
               <div class="results__card-stat">
-                <span class="results__card-stat-value">{{ project.stats.plants }}</span>
+                <span class="results__card-stat-value">{{ project.plantsCount }}</span>
                 <span class="results__card-stat-label">მცენარე</span>
               </div>
               <div class="results__card-stat">
-                <span class="results__card-stat-value">{{ project.stats.area }}</span>
+                <span class="results__card-stat-value">{{ project.area }}</span>
                 <span class="results__card-stat-label">ფართობი</span>
               </div>
               <div class="results__card-stat">
-                <span class="results__card-stat-value">{{ project.stats.duration }}</span>
+                <span class="results__card-stat-value">{{ project.duration }}</span>
                 <span class="results__card-stat-label">ვადა</span>
               </div>
             </div>
-            <a [routerLink]="['/results', project.slug]" class="results__card-link">დეტალურად</a>
+            <a [routerLink]="['/results', project._id]" class="results__card-link">დეტალურად</a>
           </div>
         </article>
       }

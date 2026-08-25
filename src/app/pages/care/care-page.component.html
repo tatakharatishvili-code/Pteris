@@ -9,20 +9,14 @@
 <!-- Filters + Grid -->
 <section class="care-list">
   <div class="care-list__container">
-    <!-- Category Filter -->
-    <div class="care-list__filters">
-      @for (cat of categories; track cat.id) {
-        <button
-          class="care-list__filter"
-          [class.active]="activeCategory() === cat.id"
-          (click)="setCategory(cat.id)"
-        >
-          {{ cat.label }}
-        </button>
-      }
-    </div>
-
     <!-- Guides Grid -->
+    @if (loading()) {
+      <p class="content-status">გაკვეთილები იტვირთება...</p>
+    } @else if (error()) {
+      <p class="content-status content-status--error">{{ error() }}</p>
+    } @else if (!guides.length) {
+      <p class="content-status">მოვლის გაკვეთილები მალე დაემატება.</p>
+    }
     <div class="care-list__grid">
       @for (guide of filteredGuides; track guide.slug) {
         <a [routerLink]="['/care', guide.slug]" class="care-list__card">

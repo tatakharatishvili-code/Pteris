@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
+import { PublicContentService } from '../../services/public-content.service';
 
 export interface ProductItem {
     slug: string;
@@ -151,25 +152,42 @@ export const PRODUCTS_DATA: ProductItem[] = [
     templateUrl: './products-page.component.html',
     styleUrl: './products-page.component.scss',
 })
-export class ProductsPageComponent {
-    activeCategory = signal('all');
+export class ProductsPageComponent implements OnInit {
+    private readonly contentApi = inject(PublicContentService);
+    loading = signal(true);
+    error = signal<string | null>(null);
 
-    categories = [
-        { id: 'all', label: 'ყველა' },
-        { id: 'fertilizer', label: 'სასუქები' },
-        { id: 'soil', label: 'ნიადაგი & სუბსტრატი' },
-    ];
+    products: ProductItem[] = [];
 
-    products = PRODUCTS_DATA;
+    ngOnInit(): void {
+        this.contentApi.getProducts().subscribe({
+            next: (products) => {
+                this.products = products.map((product, index) => ({
+                    slug: product._id,
+                    name: product.name,
+                    category: 'all',
+                    price: `${product.price} ₾`,
+                    volume: product.volume ?? '',
+                    description: product.characteristics?.[0] ?? product.composition?.[0] ?? '',
+                    badge: index === 0 ? 'ახალი' : undefined,
+                    gradient: this.gradients[index % this.gradients.length],
+                }));
+                this.loading.set(false);
+            },
+            error: () => {
+                this.error.set('პროდუქტების ჩატვირთვა ვერ მოხერხდა');
+                this.loading.set(false);
+            },
+        });
+    }
 
     get filteredProducts(): ProductItem[] {
-        const cat = this.activeCategory();
-        return cat === 'all'
-            ? this.products
-            : this.products.filter((p) => p.category === cat);
+        return this.products;
     }
 
-    setCategory(id: string): void {
-        this.activeCategory.set(id);
-    }
+    private readonly gradients = [
+        'linear-gradient(135deg, #2D6A4F, #52B788)',
+        'linear-gradient(135deg, #C9A96E, #E8D5A3)',
+        'linear-gradient(135deg, #1B4332, #95D5B2)',
+    ];
 }

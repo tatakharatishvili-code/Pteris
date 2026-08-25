@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
-import { CARE_GUIDES_DATA, CareGuide } from '../care/care-page.component';
+import { CareGuide } from '../care/care-page.component';
+import { PublicContentService } from '../../services/public-content.service';
 
 export interface CareDetail extends CareGuide {
     heroLabel: string;
@@ -395,10 +396,13 @@ const CARE_DETAILS: Record<string, Omit<CareDetail, keyof CareGuide>> = {
     styleUrl: './care-detail.component.scss',
 })
 export class CareDetailComponent implements OnInit {
+    private readonly contentApi = inject(PublicContentService);
     guide: CareGuide | null = null;
     detail: CareDetail | null = null;
     relatedGuides: CareGuide[] = [];
     safeVideoUrls: SafeResourceUrl[] = [];
+    loading = signal(true);
+    error = signal<string | null>(null);
 
     constructor(
         private route: ActivatedRoute,
@@ -407,30 +411,59 @@ export class CareDetailComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
-            const slug = params['slug'];
-            const base = CARE_GUIDES_DATA.find((g) => g.slug === slug);
-            const extra = CARE_DETAILS[slug];
-
-            if (base && extra) {
-                this.guide = base;
-                this.detail = { ...base, ...extra };
-                this.relatedGuides = CARE_GUIDES_DATA.filter(
-                    (g) => g.slug !== slug && g.category === base.category
-                ).slice(0, 3);
-
-                // If no same-category guides, show random others
-                if (this.relatedGuides.length === 0) {
-                    this.relatedGuides = CARE_GUIDES_DATA.filter(
-                        (g) => g.slug !== slug
-                    ).slice(0, 3);
-                }
-
-                this.safeVideoUrls = this.detail.videos.map((v) =>
-                    this.sanitizer.bypassSecurityTrustResourceUrl(
-                        `https://www.youtube.com/embed/${v.youtubeId}`
-                    )
-                );
-            }
+            this.loading.set(true);
+            this.error.set(null);
+            this.contentApi.getLesson(params['slug']).subscribe({
+                next: (lesson) => {
+                    const base: CareGuide = {
+                        slug: lesson._id,
+                        title: lesson.name,
+                        category: 'all',
+                        difficulty: 'გზამკვლევი',
+                        readTime: `${Math.max(3, lesson.steps.length * 2)} წთ`,
+                        description: lesson.shortDescription,
+                        icon: '✦',
+                        gradient: 'linear-gradient(135deg, #1B4332, #52B788)',
+                    };
+                    this.guide = base;
+                    this.detail = {
+                        ...base,
+                        heroLabel: 'მოვლის გაკვეთილი',
+                        heroSubtitle: lesson.shortDescription,
+                        sections: [{ title: lesson.name, text: lesson.longDescription }],
+                        steps: (lesson.steps ?? []).map((item, index) => ({
+                            step: String(index + 1).padStart(2, '0'),
+                            title: item.name,
+                            description: item.description,
+                        })),
+                        tips: lesson.advices ?? [],
+                        videos: (lesson.videos ?? []).map((url, index) => ({
+                            title: `ვიდეო გაკვეთილი ${index + 1}`,
+                            youtubeId: url,
+                        })),
+                    };
+                    this.safeVideoUrls = lesson.videos.map((url) =>
+                        this.sanitizer.bypassSecurityTrustResourceUrl(this.embedUrl(url))
+                    );
+                    this.loading.set(false);
+                },
+                error: () => {
+                    this.error.set('გაკვეთილი ვერ მოიძებნა');
+                    this.loading.set(false);
+                },
+            });
         });
+    }
+
+    private embedUrl(url: string): string {
+        try {
+            const parsed = new URL(url);
+            const id = parsed.hostname.includes('youtu.be')
+                ? parsed.pathname.slice(1)
+                : parsed.searchParams.get('v') ?? parsed.pathname.split('/').filter(Boolean).pop();
+            return id ? `https://www.youtube.com/embed/${id}` : url;
+        } catch {
+            return url;
+        }
     }
 }

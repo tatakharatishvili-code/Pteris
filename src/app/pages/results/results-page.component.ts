@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PageHeroComponent } from '../../components/page-hero/page-hero.component';
+import { PublicContentService, PublicResult } from '../../services/public-content.service';
 
 export interface ProjectItem {
     slug: string;
@@ -83,9 +84,19 @@ export const PROJECTS_DATA: ProjectItem[] = [
     templateUrl: './results-page.component.html',
     styleUrl: './results-page.component.scss',
 })
-export class ResultsPageComponent {
-    projects = PROJECTS_DATA;
+export class ResultsPageComponent implements OnInit {
+    private readonly contentApi = inject(PublicContentService);
+    readonly projects = signal<PublicResult[]>([]);
+    readonly loading = signal(true);
+    readonly error = signal<string | null>(null);
     sliderPositions: Record<string, number> = {};
+
+    ngOnInit(): void {
+        this.contentApi.getResults().subscribe({
+            next: (projects) => { this.projects.set(projects); this.loading.set(false); },
+            error: () => { this.error.set('შედეგების ჩატვირთვა ვერ მოხერხდა'); this.loading.set(false); },
+        });
+    }
 
     getSliderPosition(slug: string): number {
         return this.sliderPositions[slug] ?? 50;
@@ -97,5 +108,9 @@ export class ResultsPageComponent {
             event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
         const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
         this.sliderPositions[slug] = (x / rect.width) * 100;
+    }
+
+    imageBackground(url: string, fallback: string): string {
+        return url ? `center / cover no-repeat url("${url}")` : fallback;
     }
 }

@@ -1,4 +1,8 @@
-@if (detail) {
+@if (loading()) {
+<p class="content-status">გაკვეთილი იტვირთება...</p>
+} @else if (error()) {
+<p class="content-status content-status--error">{{ error() }}</p>
+} @else if (detail) {
 <!-- Page Hero -->
 <app-page-hero
   [label]="detail.heroLabel"

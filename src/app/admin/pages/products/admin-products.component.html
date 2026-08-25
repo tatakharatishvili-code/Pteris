@@ -1,0 +1,15 @@
+<div class="admin-page">
+  <header class="page-header"><div><h1 class="page-title">პროდუქტები</h1><p class="page-subtitle">ფასები, მახასიათებლები და გამოყენების ინსტრუქციები</p></div><button class="btn btn-primary" type="button" (click)="reset()">+ ახალი პროდუქტი</button></header>
+  @if (error()) { <div class="alert error">{{ error() }}</div> }
+  @if (success()) { <div class="alert success">{{ success() }}</div> }
+  <div class="content-grid">
+    <section class="panel"><div class="panel-header"><h2>პროდუქტების სია</h2><span class="count">{{ items().length }}</span></div>
+      @if (loading()) { <div class="empty">იტვირთება...</div> } @else if (!items().length) { <div class="empty">პროდუქტები ჯერ არ არის დამატებული</div> } @else {
+        <div class="item-list">@for (item of items(); track item._id) { <article class="item" [class.selected]="selectedId() === item._id"><div class="item-head"><div><h3>{{ item.name }}</h3><p>{{ item.volume || 'მოცულობა არ არის მითითებული' }}</p></div><strong>{{ item.price | number:'1.2-2' }} ₾</strong></div><div class="meta">@for (tag of item.characteristics; track tag) { <span>{{ tag }}</span> }</div><div class="actions"><button class="btn btn-secondary" type="button" (click)="select(item)">რედაქტირება</button><button class="btn btn-danger" type="button" (click)="remove(item)" [disabled]="deletingId() === item._id">{{ deletingId() === item._id ? 'იშლება...' : 'წაშლა' }}</button></div></article> }</div>
+      }
+    </section>
+    <section class="panel form-panel"><div class="panel-header"><h2>{{ isEditing() ? 'პროდუქტის რედაქტირება' : 'ახალი პროდუქტი' }}</h2></div>
+      <form class="form" (ngSubmit)="submit()"><div class="form-grid"><label class="field"><span>სახელი *</span><input name="name" [(ngModel)]="name" /></label><label class="field"><span>ფასი *</span><input name="price" type="number" min="0" step="0.01" [(ngModel)]="price" /></label><label class="field full"><span>მოცულობა</span><input name="volume" [(ngModel)]="volume" placeholder="მაგ. 500ml" /></label></div><label class="field"><span>მახასიათებლები</span><small>თითო მნიშვნელობა ახალ ხაზზე</small><textarea name="characteristics" [(ngModel)]="characteristics"></textarea></label><label class="field"><span>ინსტრუქციები</span><small>ფორმატი: სათაური | აღწერა</small><textarea name="instructions" rows="4" [(ngModel)]="instructions"></textarea></label><label class="field"><span>შემადგენლობა</span><small>თითო მნიშვნელობა ახალ ხაზზე</small><textarea name="composition" [(ngModel)]="composition"></textarea></label><label class="field"><span>რჩევები</span><small>თითო მნიშვნელობა ახალ ხაზზე</small><textarea name="tips" [(ngModel)]="tips"></textarea></label><button class="btn btn-primary submit" type="submit" [disabled]="saving()">{{ saving() ? 'ინახება...' : (isEditing() ? 'განახლება' : 'დამატება') }}</button></form>
+    </section>
+  </div>
+</div>

@@ -6,45 +6,22 @@
     </div>
   </div>
 
-  <div class="welcome-card">
-    <div class="welcome-icon">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <rect x="4" y="4" width="40" height="40" rx="12" fill="var(--color-green-mist)"/>
-        <path d="M24 14c-4.5 0-8 4-8 9s3 8 8 11c5-3 8-6 8-11s-3.5-9-8-9z" fill="var(--color-forest)"/>
-        <circle cx="24" cy="22" r="2.5" fill="var(--color-gold)"/>
-      </svg>
-    </div>
-    <div class="welcome-content">
-      <h2>Pteris ადმინ პანელი</h2>
-      <p>აქედან შეგიძლიათ მართოთ თქვენი ვებსაიტის კონტენტი. მალე დაემატება მეტი ფუნქციონალი.</p>
-    </div>
-  </div>
-
   <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon green">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M4 19c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
+    <a class="stat-card" routerLink="/admin/products">
       <div class="stat-info">
-        <span class="stat-label">სტატუსი</span>
-        <span class="stat-value">აქტიური</span>
+        <span class="stat-label">პროდუქტები</span>
+        <span class="stat-value">{{ loading() ? '—' : counts().products }}</span>
       </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon gold">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <rect x="3" y="5" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M3 9h16" stroke="currentColor" stroke-width="1.5"/>
-        </svg>
-      </div>
+      <span class="stat-arrow">→</span>
+    </a>
+    <a class="stat-card" routerLink="/admin/lessons">
       <div class="stat-info">
-        <span class="stat-label">როლი</span>
-        <span class="stat-value">ადმინისტრატორი</span>
+        <span class="stat-label">მოვლის გაკვეთილები</span>
+        <span class="stat-value">{{ loading() ? '—' : counts().lessons }}</span>
       </div>
-    </div>
+      <span class="stat-arrow">→</span>
+    </a>
+    <a class="stat-card" routerLink="/admin/coworkers"><div class="stat-info"><span class="stat-label">გუნდი</span><span class="stat-value">{{ loading() ? '—' : counts().coworkers }}</span></div><span class="stat-arrow">→</span></a>
+    <a class="stat-card" routerLink="/admin/messages"><div class="stat-info"><span class="stat-label">შეტყობინებები</span><span class="stat-value">{{ loading() ? '—' : counts().messages }}</span></div><span class="stat-arrow">→</span></a>
   </div>
 </div>
