@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const API_URL = 'https://pteris-e5dq2.ondigitalocean.app/api';
+const API_URL = 'https://pteris2-app-4dgcp.ondigitalocean.app/api';
 
 export interface NamedDescription {
   name: string;

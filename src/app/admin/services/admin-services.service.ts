@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const BASE_URL = 'https://pteris-e5dq2.ondigitalocean.app';
+const BASE_URL = 'https://pteris2-app-4dgcp.ondigitalocean.app';
 
 export interface AdminServiceEntity {
   _id: string;

@@ -14,7 +14,7 @@ export interface LoginPayload {
   password: string;
 }
 
-const BASE_URL = 'https://pteris-e5dq2.ondigitalocean.app';
+const BASE_URL = 'https://pteris2-app-4dgcp.ondigitalocean.app';
 const ADMIN_USER_STORAGE_KEY = 'admin_user';
 
 @Injectable({ providedIn: 'root' })
