@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Original (uncompressed) hero video — too large for GitHub
+public/assets/video/Pteris Horizontal Clip.mp4

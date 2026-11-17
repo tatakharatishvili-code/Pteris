@@ -13,10 +13,12 @@
     inset: 0;
     z-index: 0;
 
-    &-image {
+    &-video {
       position: absolute;
       inset: 0;
-      background: url('/assets/gvimra.jpg') center center / cover no-repeat;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       transform: scale(1.03);
     }
 
@@ -68,7 +70,7 @@
     }
   }
 
-  // ── Floating Leaves (removed — using photo bg) ──
+  // ── Floating Leaves (removed — using video bg) ──
 
   // ── Container ──
   &__container {
@@ -79,7 +81,7 @@
     margin: 0 auto;
     padding: calc(var(--header-height) + var(--space-3xl)) var(--space-xl) var(--space-3xl);
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4xl);
     align-items: center;
 
