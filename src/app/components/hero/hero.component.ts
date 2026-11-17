@@ -1,4 +1,12 @@
-import { Component, OnInit, signal, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +16,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
 })
-export class HeroComponent implements OnInit, OnDestroy {
+export class HeroComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('bgVideo') bgVideo?: ElementRef<HTMLVideoElement>;
+
   currentSlide = signal(0);
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
@@ -45,6 +55,17 @@ export class HeroComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.startAutoSlide();
+  }
+
+  ngAfterViewInit(): void {
+    // Angular sets `muted` as an attribute only, so browsers treat the video
+    // as unmuted and block autoplay. Set the property and start playback.
+    const video = this.bgVideo?.nativeElement;
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(() => {
+      /* autoplay blocked (e.g. low-power mode) — first frame stays as poster */
+    });
   }
 
   ngOnDestroy(): void {
