@@ -58,18 +58,56 @@ export class HeroComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // Angular sets `muted` as an attribute only, so browsers treat the video
-    // as unmuted and block autoplay. Set the property and start playback.
     const video = this.bgVideo?.nativeElement;
     if (!video) return;
+
+    // Angular sets `muted` as an attribute only, so browsers treat the video
+    // as unmuted and block autoplay. Set the properties explicitly.
     video.muted = true;
-    video.play().catch(() => {
-      /* autoplay blocked (e.g. low-power mode) — first frame stays as poster */
-    });
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+
+    // Phones get a lighter file so playback can start quickly.
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    video.src = isMobile
+      ? '/assets/video/hero-mobile.mp4'
+      : '/assets/video/hero.mp4';
+
+    video.addEventListener('canplay', this.tryPlayVideo, { once: true });
+    this.tryPlayVideo();
+
+    // If autoplay is blocked (iOS Low Power Mode, Android Data Saver),
+    // start the video on the first user interaction instead.
+    this.userGestureEvents.forEach((e) =>
+      window.addEventListener(e, this.tryPlayVideo, { passive: true }),
+    );
+  }
+
+  private readonly userGestureEvents = ['touchstart', 'click', 'scroll'];
+
+  private tryPlayVideo = (): void => {
+    const video = this.bgVideo?.nativeElement;
+    if (!video || !video.paused) return;
+    video
+      .play()
+      .then(() => this.removeGestureListeners())
+      .catch(() => {
+        /* still blocked — will retry on next user interaction */
+      });
+  };
+
+  private removeGestureListeners(): void {
+    this.userGestureEvents.forEach((e) =>
+      window.removeEventListener(e, this.tryPlayVideo),
+    );
   }
 
   ngOnDestroy(): void {
     this.stopAutoSlide();
+    this.removeGestureListeners();
   }
 
   startAutoSlide(): void {

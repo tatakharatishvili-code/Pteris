@@ -1,9 +1,8 @@
 <section class="hero">
   <!-- Video Background -->
   <div class="hero__bg">
-    <video #bgVideo class="hero__bg-video" autoplay [muted]="true" loop playsinline preload="auto" aria-hidden="true">
-      <source src="/assets/video/hero.mp4" type="video/mp4" />
-    </video>
+    <!-- src is set in hero.component.ts (lighter file on mobile) -->
+    <video #bgVideo class="hero__bg-video" autoplay [muted]="true" loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="hero__bg-overlay"></div>
     <div class="hero__bg-pattern"></div>
     <div class="hero__bg-orb hero__bg-orb--1"></div>
